@@ -1,18 +1,17 @@
-import typing
+from typing import Callable, Generic, List, TypeVar
+
+T = TypeVar("T")
 
 
-class SegTree:
+class SegTree(Generic[T]):
     def __init__(
         self,
-        op: typing.Callable[[typing.Any, typing.Any], typing.Any],
-        e: typing.Any,
-        v: typing.Union[int, typing.List[typing.Any]],
+        v: List[T],
+        e: T,
+        op: Callable[[T, T], T],
     ) -> None:
         self._op = op
         self._e = e
-
-        if isinstance(v, int):
-            v = [e] * v
 
         self._n = len(v)
         self._log = _ceil_pow2(self._n)
@@ -24,7 +23,7 @@ class SegTree:
         for i in range(self._size - 1, 0, -1):
             self._update(i)
 
-    def set(self, p: int, x: typing.Any) -> None:
+    def set(self, p: int, x: T) -> None:
         assert 0 <= p < self._n
 
         p += self._size
@@ -32,12 +31,12 @@ class SegTree:
         for i in range(1, self._log + 1):
             self._update(p >> i)
 
-    def get(self, p: int) -> typing.Any:
+    def get(self, p: int) -> T:
         assert 0 <= p < self._n
 
         return self._d[p + self._size]
 
-    def prod(self, left: int, right: int) -> typing.Any:
+    def prod(self, left: int, right: int) -> T:
         assert 0 <= left <= right <= self._n
         sml = self._e
         smr = self._e
@@ -56,10 +55,10 @@ class SegTree:
 
         return self._op(sml, smr)
 
-    def all_prod(self) -> typing.Any:
+    def all_prod(self) -> T:
         return self._d[1]
 
-    def max_right(self, left: int, f: typing.Callable[[typing.Any], bool]) -> int:
+    def max_right(self, left: int, f: Callable[[T], bool]) -> int:
         assert 0 <= left <= self._n
         assert f(self._e)
 
@@ -86,7 +85,7 @@ class SegTree:
 
         return self._n
 
-    def min_left(self, right: int, f: typing.Callable[[typing.Any], bool]) -> int:
+    def min_left(self, right: int, f: Callable[[T], bool]) -> int:
         assert 0 <= right <= self._n
         assert f(self._e)
 
