@@ -24,7 +24,7 @@ class LazySegtree(Generic[S, F]):
         v: Iterable[S],
         e: S,
         op: Callable[[S, S], S],
-        id_: F,
+        id: F,
         mapping: Callable[[F, S], S],
         composition: Callable[[F, F], F],
     ) -> None:
@@ -32,7 +32,7 @@ class LazySegtree(Generic[S, F]):
         self._e = e
         self._mapping = mapping
         self._composition = composition
-        self._id = id_
+        self._id = id
 
         v = list(v)
         self._n = len(v)
