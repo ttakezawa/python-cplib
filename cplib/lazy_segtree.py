@@ -63,7 +63,7 @@ class LazySegtree(Generic[S, F]):
             self._push(p >> i)
         return self._d[p]
 
-    def prod(self, left: int, right: int) -> S:
+    def prod_range(self, left: int, right: int) -> S:
         assert 0 <= left <= right <= self._n
 
         if left == right:

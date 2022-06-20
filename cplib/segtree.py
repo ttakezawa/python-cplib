@@ -46,7 +46,7 @@ class Segtree(Generic[S]):
 
         return self._d[p + self._size]
 
-    def prod(self, left: int, right: int) -> S:
+    def prod_range(self, left: int, right: int) -> S:
         assert 0 <= left <= right <= self._n
         sml = self._e
         smr = self._e
