@@ -4,7 +4,7 @@ from cplib.lazy_segtree import LazySegtree
 
 
 class Test(TestCase):
-    def test_segtree(self) -> None:
+    def test_lazy_segtree(self) -> None:
         seg = LazySegtree(
             [2] * 5,
             0,
