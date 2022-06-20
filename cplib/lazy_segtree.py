@@ -1,5 +1,5 @@
 # Originated from https://github.com/not522/ac-library-python/blob/master/atcoder/lazysegtree.py
-from typing import Callable, Generic, Iterable, Optional, TypeVar
+from typing import Callable, Generic, Iterable, TypeVar
 
 S = TypeVar("S")
 F = TypeVar("F")
@@ -95,57 +95,48 @@ class LazySegtree(Generic[S, F]):
     def all_prod(self) -> S:
         return self._d[1]
 
-    def apply_range(
-        self,
-        left: int,
-        right: Optional[int],
-        f: F,
-    ) -> None:
-        assert f is not None
+    def apply_point(self, p: int, f: F) -> None:
+        assert 0 <= p < self._n
+        p += self._size
+        for i in range(self._log, 0, -1):
+            self._push(p >> i)
+        self._d[p] = self._mapping(f, self._d[p])
+        for i in range(1, self._log + 1):
+            self._update(p >> i)
 
-        if right is None:
-            p = left
-            assert 0 <= left < self._n
+    def apply_range(self, left: int, right: int, f: F) -> None:
+        assert 0 <= left <= right <= self._n
+        if left == right:
+            return
 
-            p += self._size
-            for i in range(self._log, 0, -1):
-                self._push(p >> i)
-            self._d[p] = self._mapping(f, self._d[p])
-            for i in range(1, self._log + 1):
-                self._update(p >> i)
-        else:
-            assert 0 <= left <= right <= self._n
-            if left == right:
-                return
+        left += self._size
+        right += self._size
 
-            left += self._size
-            right += self._size
+        for i in range(self._log, 0, -1):
+            if ((left >> i) << i) != left:
+                self._push(left >> i)
+            if ((right >> i) << i) != right:
+                self._push((right - 1) >> i)
 
-            for i in range(self._log, 0, -1):
-                if ((left >> i) << i) != left:
-                    self._push(left >> i)
-                if ((right >> i) << i) != right:
-                    self._push((right - 1) >> i)
+        l2 = left
+        r2 = right
+        while left < right:
+            if left & 1:
+                self._all_apply(left, f)
+                left += 1
+            if right & 1:
+                right -= 1
+                self._all_apply(right, f)
+            left >>= 1
+            right >>= 1
+        left = l2
+        right = r2
 
-            l2 = left
-            r2 = right
-            while left < right:
-                if left & 1:
-                    self._all_apply(left, f)
-                    left += 1
-                if right & 1:
-                    right -= 1
-                    self._all_apply(right, f)
-                left >>= 1
-                right >>= 1
-            left = l2
-            right = r2
-
-            for i in range(1, self._log + 1):
-                if ((left >> i) << i) != left:
-                    self._update(left >> i)
-                if ((right >> i) << i) != right:
-                    self._update((right - 1) >> i)
+        for i in range(1, self._log + 1):
+            if ((left >> i) << i) != left:
+                self._update(left >> i)
+            if ((right >> i) << i) != right:
+                self._update((right - 1) >> i)
 
     def max_right(self, left: int, g: Callable[[S], bool]) -> int:
         assert 0 <= left <= self._n
