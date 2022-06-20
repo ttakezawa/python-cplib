@@ -3,6 +3,7 @@ from typing import Callable, Generic, List, TypeVar
 T = TypeVar("T")
 
 
+# Originated from: https://github.com/not522/ac-library-python/blob/master/atcoder/segtree.py
 class SegTree(Generic[T]):
     def __init__(
         self,
@@ -114,6 +115,9 @@ class SegTree(Generic[T]):
 
     def _update(self, k: int) -> None:
         self._d[k] = self._op(self._d[2 * k], self._d[2 * k + 1])
+
+    def add(self, p: int, increment: T) -> None:
+        self.set(p, self.get(p) + increment)  # type: ignore
 
 
 def _ceil_pow2(n: int) -> int:
