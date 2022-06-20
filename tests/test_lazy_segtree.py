@@ -14,5 +14,5 @@ class Test(TestCase):
             lambda f, g: f * g,
         )
         assert seg.all_prod() == 2
-        seg.apply(0, 4, 2)
+        seg.apply_range(0, 4, 2)
         assert seg.all_prod() == 4
