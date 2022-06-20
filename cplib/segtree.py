@@ -4,7 +4,7 @@ T = TypeVar("T")
 
 
 # Originated from: https://github.com/not522/ac-library-python/blob/master/atcoder/segtree.py
-class SegTree(Generic[T]):
+class Segtree(Generic[T]):
     def __init__(
         self,
         v: List[T],
