@@ -125,6 +125,12 @@ class Segtree(Generic[S]):
     def _update(self, k: int) -> None:
         self._d[k] = self._op(self._d[2 * k], self._d[2 * k + 1])
 
+    def __len__(self) -> int:
+        return self._n
+
+    def __getitem__(self, key: int) -> S:
+        return self.get(key)
+
     def add(self, p: int, increment: S) -> None:
         self.set(p, self.get(p) + increment)  # type: ignore
 

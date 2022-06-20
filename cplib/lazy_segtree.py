@@ -220,6 +220,15 @@ class LazySegtree(Generic[S, F]):
         self._all_apply(2 * k + 1, self._lz[k])
         self._lz[k] = self._id
 
+    def __len__(self) -> int:
+        return self._n
+
+    def __getitem__(self, key: int) -> S:
+        return self.get(key)
+
+    def add(self, p: int, increment: S) -> None:
+        self.set(p, self.get(p) + increment)  # type: ignore
+
 
 def _ceil_pow2(n: int) -> int:
     x = 0
