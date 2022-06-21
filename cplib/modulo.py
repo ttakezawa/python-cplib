@@ -18,9 +18,7 @@ def pow_mod(x: int, n: int, mod: int) -> int:
 
 
 def inv_mod(x: int, mod: int) -> int:
-    """
-    引数xとmodは互いに素 GCD(a,mod)=1 であることが必要
-    """
+    """xとmodは互いに素 GCD(x,mod)=1 であることが必要"""
     assert 1 <= mod
     z = _inv_gcd(x, mod)
     assert z[0] == 1

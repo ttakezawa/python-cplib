@@ -12,9 +12,7 @@ class Sieve:
     )
 
     def __init__(self, max: int) -> None:
-        """
-        O(n log log n)
-        """
+        """O(n log log n)"""
         self._min_factor = [i for i in range(0, max + 1)]
         self._primes: List[int] = []
         for i in range(2, max + 1):
@@ -32,9 +30,7 @@ class Sieve:
         return n > 1 and self._min_factor[n] == n
 
     def factorize(self, n: int) -> Dict[int, int]:
-        """
-        SPFによる素因数分解 O(log n): returns Dict[prime => count]
-        """
+        """SPFによる素因数分解 O(log n): returns Dict[prime => count]"""
         ret: Dict[int, int] = defaultdict(int)
         while n > 1:
             ret[self._min_factor[n]] += 1
@@ -42,6 +38,7 @@ class Sieve:
         return ret
 
     def divisors(self, n: int) -> List[int]:
+        """O(√n)"""
         ret = [1]
         for factor, cnt in self.factorize(n).items():
             for j in range(0, len(ret)):
@@ -49,4 +46,5 @@ class Sieve:
                 for _ in range(cnt):
                     p *= factor
                     ret.append(p * ret[j])
+        ret.sort()
         return ret
