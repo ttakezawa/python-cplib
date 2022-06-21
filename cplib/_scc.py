@@ -40,7 +40,7 @@ class SCCGraph:
         g = CSR(self._n, self._edges)
         now_ord = 0
         group_num = 0
-        visited = []
+        visited: typing.List[int] = []
         low = [0] * self._n
         order = [-1] * self._n
         ids = [0] * self._n

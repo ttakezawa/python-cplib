@@ -30,7 +30,7 @@ def inv_mod(x: int, mod: int) -> int:
 def _inv_gcd(a: int, b: int) -> Tuple[int, int]:
     a %= b
     if a == 0:
-        return (b, 0)
+        return b, 0
     s, t = b, a
     m0, m1 = 0, 1
     while t:
@@ -41,7 +41,7 @@ def _inv_gcd(a: int, b: int) -> Tuple[int, int]:
         m0, m1 = m1, m0
     if m0 < 0:
         m0 += b // s
-    return (s, m0)
+    return s, m0
 
 
 class FactorialCache:
