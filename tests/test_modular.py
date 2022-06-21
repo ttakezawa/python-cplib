@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from cplib.modulo import FactorialCache, inv_mod, mod1000000007, pow_mod
+from cplib.modular import FactorialCache, inv_mod, mod1000000007, pow_mod
 
 
 class Test(TestCase):
