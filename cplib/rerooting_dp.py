@@ -52,14 +52,26 @@ def rerooting_dp(
 ) -> List[S]:
     """全方位木DP
 
-    dp[v] = g(merge(f(dp[c1],v,c1), f(dp[c2],v,c2), f(dp[c3],v,c3), ...), v)
-    c1, c2, c3,...: children of v
+    Example::
+
+        dp = rerooting_dp(
+            adj,
+            identity=0,
+            merge=lambda x, y: max(x, y),
+            add_edge=lambda x, src, dst: s + edges[(src, dst)],
+            add_children=lambda x, v: s,
+        )
+
+    Description:
+
+        dp[v] = g(merge(f(dp[c1],v,c1), f(dp[c2],v,c2), f(dp[c3],v,c3), ...), v)
+        c1, c2, c3,...: children of v
 
     Args:
-        add_edge: f(s, src, dst)
-        add_children: g(s, v)
-    """
 
+        add_edge: f(x, src, dst)
+        add_children: g(x, v)
+    """
     f, g = add_edge, add_children
     root = 0
     N = len(adj)
