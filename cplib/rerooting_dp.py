@@ -1,3 +1,6 @@
+# Originated from
+# - https://null-mn.hatenablog.com/entry/2020/04/14/124151
+# - https://algo-logic.info/tree-dp/
 from collections import deque
 from typing import Callable, Deque, Generator, List, Tuple, TypeVar
 
