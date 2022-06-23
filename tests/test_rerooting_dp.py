@@ -26,9 +26,9 @@ class Test(TestCase):
 
         dp = rerooting_dp(
             adj,
-            1,
-            lambda x, y: x * y % m,
-            lambda x, to, from_: x + 1,
-            lambda x, v: x,
+            identity=1,
+            merge=lambda x, y: x * y % m,
+            add_edge=lambda x, src, dst: x + 1,
+            add_children=lambda x, v: x,
         )
         assert dp == [0, 0, 1, 1, 1, 0, 1, 0, 1, 1]
