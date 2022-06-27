@@ -35,7 +35,7 @@ class Matrix:
     def identity(cls, n: int) -> "Matrix":
         e = Matrix(n, n)
         for i in range(n):
-            e[i][i] = 1
+            e._inner[i][i] = 1
         return e
 
     def __str__(self) -> str:
@@ -45,7 +45,7 @@ class Matrix:
         return len(self._inner)
 
     def cols(self) -> int:
-        return len(self[0])
+        return len(self._inner[0])
 
     def copy(self) -> "Matrix":
         ret = Matrix(0, 0)
@@ -55,7 +55,7 @@ class Matrix:
     def _replace(self, other: "Matrix") -> None:
         for i in range(self.rows()):
             for j in range(self.cols()):
-                self[i][j] = other[i][j]
+                self._inner[i][j] = other._inner[i][j]
 
     def __eq__(self, other: "object") -> bool:
         if not isinstance(other, Matrix):
@@ -64,7 +64,7 @@ class Matrix:
             return False
         for i in range(self.rows()):
             for j in range(self.cols()):
-                if self[i][j] != other[i][j]:
+                if self._inner[i][j] != other._inner[i][j]:
                     return False
         return True
 
@@ -77,7 +77,7 @@ class Matrix:
         # assert self.rows() == other.rows() and self.cols() == other.cols()
         for i in range(self.cols()):
             for j in range(self.rows()):
-                self[i][j] += other[i][j]
+                self._inner[i][j] += other._inner[i][j]
         return self
 
     def __sub__(self, other: "Matrix") -> "Matrix":
@@ -89,12 +89,15 @@ class Matrix:
         # assert self.rows() == other.rows() and self.cols() == other.cols()
         for i in range(self.cols()):
             for j in range(self.rows()):
-                self[i][j] -= other[i][j]
+                self._inner[i][j] -= other._inner[i][j]
         return self
 
     def __neg__(self) -> "Matrix":
         return Matrix.from_list(
-            [[-self[i][j] for j in range(self.cols())] for i in range(self.rows())]
+            [
+                [-self._inner[i][j] for j in range(self.cols())]
+                for i in range(self.rows())
+            ]
         )
 
     def __mod__(self, other: int) -> "Matrix":
@@ -105,7 +108,7 @@ class Matrix:
     def __imod__(self, mod: int) -> "Matrix":
         for i in range(self.cols()):
             for j in range(self.rows()):
-                self[i][j] %= mod
+                self._inner[i][j] %= mod
         return self
 
     def __mul__(self, other: Union["Matrix", int]) -> "Matrix":
@@ -113,7 +116,7 @@ class Matrix:
         if isinstance(other, int):
             return Matrix.from_list(
                 [
-                    [self[i][j] * other for j in range(self.cols())]
+                    [self._inner[i][j] * other for j in range(self.cols())]
                     for i in range(self.rows())
                 ]
             )
@@ -125,7 +128,7 @@ class Matrix:
         for i in range(h):
             for k in range(w):
                 for j in range(v):
-                    ret[i][j] += self[i][k] * other[k][j]
+                    ret._inner[i][j] += self._inner[i][k] * other._inner[k][j]
         return ret
 
     def __imul__(self, other: Union["Matrix", int]) -> "Matrix":
