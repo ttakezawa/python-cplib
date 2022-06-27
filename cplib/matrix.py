@@ -126,9 +126,11 @@ class Matrix:
         assert w == u
         ret = Matrix(h, v)
         for i in range(h):
-            for k in range(w):
-                for j in range(v):
-                    ret._inner[i][j] += self._inner[i][k] * other._inner[k][j]
+            for j in range(v):
+                tmp = 0
+                for k in range(w):
+                    tmp += self._inner[i][k] * other._inner[k][j]
+                ret._inner[i][j] = tmp
         return ret
 
     def __imul__(self, other: Union["Matrix", int]) -> "Matrix":
