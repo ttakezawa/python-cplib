@@ -17,6 +17,10 @@ class Matrix:
     def __iter__(self) -> Iterator[List[int]]:
         return self._inner.__iter__()
 
+    def get_column(self, col_idx: int) -> List[int]:
+        assert col_idx < self.cols()
+        return [row[col_idx] for row in self]
+
     @classmethod
     def from_list(cls, lists: List[List[int]]) -> "Matrix":
         n = len(lists)
