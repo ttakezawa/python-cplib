@@ -2,20 +2,20 @@ from typing import Iterator, List, Union
 
 
 class Matrix:
-    __slots__ = "inner"
+    __slots__ = "_inner"
 
     def __init__(self, n: int, m: int, default: int = 0) -> None:
-        self.inner = [[default] * m for _ in range(n)]
+        self._inner = [[default] * m for _ in range(n)]
 
     def __getitem__(self, row_idx: int) -> List[int]:
-        return self.inner[row_idx]
+        return self._inner[row_idx]
 
     def __setitem__(self, row_idx: int, row: List[int]) -> None:
         assert self.cols() == len(row)
-        self.inner[row_idx] = row
+        self._inner[row_idx] = row
 
     def __iter__(self) -> Iterator[List[int]]:
-        return self.inner.__iter__()
+        return self._inner.__iter__()
 
     @classmethod
     def from_list(cls, lists: List[List[int]]) -> "Matrix":
@@ -24,7 +24,7 @@ class Matrix:
         for i in range(1, n):
             assert len(lists[i]) == m
         mat = Matrix(0, 0)
-        mat.inner = lists
+        mat._inner = lists
         return mat
 
     @classmethod
@@ -35,17 +35,17 @@ class Matrix:
         return e
 
     def __str__(self) -> str:
-        return self.inner.__str__()
+        return self._inner.__str__()
 
     def rows(self) -> int:
-        return len(self.inner)
+        return len(self._inner)
 
     def cols(self) -> int:
         return len(self[0])
 
     def copy(self) -> "Matrix":
         ret = Matrix(0, 0)
-        ret.inner = [r.copy() for r in self.inner]
+        ret._inner = [r.copy() for r in self._inner]
         return ret
 
     def _replace(self, other: "Matrix") -> None:
