@@ -1,4 +1,4 @@
-# https://github.com/not522/ac-library-python/blob/master/atcoder/dsu.py
+# Originaged from https://github.com/not522/ac-library-python/blob/master/atcoder/dsu.py
 from typing import List
 
 

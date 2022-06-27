@@ -1,3 +1,4 @@
+# Originaged from: https://github.com/not522/ac-library-python/blob/master/atcoder/scc.py
 import typing
 
 import cplib._scc
