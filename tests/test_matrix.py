@@ -18,8 +18,8 @@ class Test(TestCase):
 
     def test_get_column(self) -> None:
         x = Matrix.from_list([[1, 2], [3, 4]])
-        assert x.get_column(0) == [1,3]
-        assert x.get_column(1) == [2,4]
+        assert x.get_column(0) == [1, 3]
+        assert x.get_column(1) == [2, 4]
 
     def test_size(self) -> None:
         x = Matrix.from_list([[1, 2, 3], [3, 4, 5]])
@@ -53,6 +53,9 @@ class Test(TestCase):
         assert x * y == Matrix.from_list([[4, 6], [8, 16]])
         x *= y
         assert x == Matrix.from_list([[4, 6], [8, 16]])
+
+        x, y = Matrix.from_list([[1, 2], [3, 4]]), Matrix.from_list([[1], [2]])
+        assert x * y == Matrix.from_list([[5], [11]])
 
     def test_pow(self) -> None:
         x = Matrix.from_list([[1, 2], [3, 4]])

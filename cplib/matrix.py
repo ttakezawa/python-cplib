@@ -118,8 +118,8 @@ class Matrix:
                 ]
             )
 
-        h, w = self.cols(), self.rows()
-        u, v = other.cols(), other.rows()
+        h, w = self.rows(), self.cols()
+        u, v = other.rows(), other.cols()
         assert w == u
         ret = Matrix(h, v)
         for i in range(h):
