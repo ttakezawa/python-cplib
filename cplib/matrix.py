@@ -127,10 +127,8 @@ class Matrix:
         ret = Matrix(h, v)
         for i in range(h):
             for j in range(v):
-                tmp = 0
                 for k in range(w):
-                    tmp += self._inner[i][k] * other._inner[k][j]
-                ret._inner[i][j] = tmp
+                    ret._inner[i][j] += self._inner[i][k] * other._inner[k][j]
         return ret
 
     def __imul__(self, other: Union["Matrix", int]) -> "Matrix":
