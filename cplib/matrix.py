@@ -11,22 +11,22 @@ class Matrix:
         return self._inner[row_idx]
 
     def __setitem__(self, row_idx: int, row: List[int]) -> None:
-        # assert self.cols() == len(row)
+        assert self.cols() == len(row)
         self._inner[row_idx] = row
 
     def __iter__(self) -> Iterator[List[int]]:
         return self._inner.__iter__()
 
     def get_column(self, col_idx: int) -> List[int]:
-        # assert col_idx < self.cols()
+        assert col_idx < self.cols()
         return [row[col_idx] for row in self]
 
     @classmethod
     def from_list(cls, lists: List[List[int]]) -> "Matrix":
-        # n = len(lists)
-        # m = len(lists[0])
-        # for i in range(1, n):
-        #     assert len(lists[i]) == m
+        n = len(lists)
+        m = len(lists[0])
+        for i in range(1, n):
+            assert len(lists[i]) == m
         mat = Matrix(0, 0)
         mat._inner = lists
         return mat
@@ -74,7 +74,7 @@ class Matrix:
         return ret
 
     def __iadd__(self, other: "Matrix") -> "Matrix":
-        # assert self.rows() == other.rows() and self.cols() == other.cols()
+        assert self.rows() == other.rows() and self.cols() == other.cols()
         for i in range(self.cols()):
             for j in range(self.rows()):
                 self._inner[i][j] += other._inner[i][j]
@@ -86,7 +86,7 @@ class Matrix:
         return ret
 
     def __isub__(self, other: "Matrix") -> "Matrix":
-        # assert self.rows() == other.rows() and self.cols() == other.cols()
+        assert self.rows() == other.rows() and self.cols() == other.cols()
         for i in range(self.cols()):
             for j in range(self.rows()):
                 self._inner[i][j] -= other._inner[i][j]
@@ -123,7 +123,7 @@ class Matrix:
 
         h, w = self.rows(), self.cols()
         u, v = other.rows(), other.cols()
-        # assert w == u
+        assert w == u
         ret = Matrix(h, v)
         for i in range(h):
             for k in range(w):
@@ -136,7 +136,7 @@ class Matrix:
         return self
 
     def __pow__(self, exp: int) -> "Matrix":
-        # assert self.cols() == self.rows()
+        assert self.cols() == self.rows()
         base = self.copy()
         ret = Matrix.identity(self.cols())
         while exp:
@@ -152,7 +152,7 @@ class Matrix:
 
     def pow_mod(self, exp: int, mod: int) -> "Matrix":
         """self^exp % mod with O(n³log(exp))"""
-        # assert self.cols() == self.rows()
+        assert self.cols() == self.rows()
         base = self.copy()
         ret = Matrix.identity(self.cols())
         while exp:
