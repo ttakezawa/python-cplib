@@ -49,6 +49,15 @@ class Test(TestCase):
         x *= y
         assert x == Matrix.from_list([[4, 6], [8, 16]])
 
+    def test_pow(self) -> None:
+        x = Matrix.from_list([[1, 2], [3, 4]])
+        x10 = Matrix.identity(2)
+        for _ in range(10):  # naive calculation
+            x10 *= x
+        assert x ** 10 == x10
+        x **= 10
+        assert x == x10
+
     def test_pow_mod(self) -> None:
         x = Matrix.from_list([[1, 2], [3, 4]])
         x100 = Matrix.identity(2)
@@ -56,3 +65,4 @@ class Test(TestCase):
             x100 *= x
             x100 %= 1223
         assert x.pow_mod(100, 1223) == x100
+        assert x == Matrix.from_list([[1, 2], [3, 4]])

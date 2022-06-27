@@ -128,10 +128,25 @@ class Matrix:
         self._replace(self * other)
         return self
 
+    def __pow__(self, exp: int) -> "Matrix":
+        assert self.cols() == self.rows()
+        base = self.copy()
+        ret = Matrix.identity(self.cols())
+        while exp:
+            if exp & 1:
+                ret *= base
+            base *= base
+            exp >>= 1
+        return ret
+
+    def __ipow__(self, exp: int) -> "Matrix":
+        self._replace(self ** exp)
+        return self
+
     def pow_mod(self, exp: int, mod: int) -> "Matrix":
         """self^exp % mod with O(n³log(exp))"""
         assert self.cols() == self.rows()
-        base = self
+        base = self.copy()
         ret = Matrix.identity(self.cols())
         while exp:
             if exp & 1:
