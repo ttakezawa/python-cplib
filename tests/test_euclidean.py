@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from cplib.math import gcd, lcm
+from cplib.euclidean import gcd, lcm
 
 
 class Test(TestCase):
