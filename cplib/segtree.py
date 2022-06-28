@@ -20,6 +20,14 @@ class Segtree(Generic[S]):
         e: S,
         op: Callable[[S, S], S],
     ) -> None:
+        """
+        Examples::
+
+            Segtree(v, 0, euclidean.gcd)
+            Segtree(v, 0, operator.add)
+            Segtree(v, -inf, max)
+            Segtree(v, inf, min)
+        """
         self._op = op
         self._e = e
 
