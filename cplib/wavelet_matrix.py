@@ -1,16 +1,16 @@
 # Originated from https://github.com/Neterukun1993/Library/blob/master/DataStructure/Wavelet/WaveletMatrix.py
 from bisect import bisect_left
 from typing import List, Optional
+from array import array
 
 
 class BitVector:
     __slots__ = ("block_num", "bit", "cnt")
 
     def __init__(self, size: int):
-        # self.BLOCK_WIDTH = 32
         self.block_num = (size + 31) >> 5
-        self.bit = [0] * self.block_num
-        self.cnt = [0] * self.block_num
+        self.bit = array("l", [0] * self.block_num)
+        self.cnt = array("l", [0] * self.block_num)
 
     def __getitem__(self, i: int) -> int:
         return (self.bit[i >> 5] >> (i & 31)) & 1
@@ -33,13 +33,13 @@ class BitVector:
 
 
 class WaveletMatrix:
-    __slots__ = ("maxlog", "n", "mat", "mid")
+    __slots__ = ("maxlog", "n", "mat", "zs")
 
     def __init__(self, array: List[int], MAXLOG: int = 32):
         self.maxlog = MAXLOG
         self.n = len(array)
         self.mat: List[BitVector] = []
-        self.mid: List[int] = []
+        self.zs: List[int] = []
 
         for d in reversed(range(self.maxlog)):
             vec = BitVector(self.n + 1)
@@ -53,7 +53,7 @@ class WaveletMatrix:
                     ls.append(val)
             vec.build()
             self.mat.append(vec)
-            self.mid.append(len(ls))
+            self.zs.append(len(ls))
             array = ls + rs
 
     def access(self, i: int) -> int:
@@ -62,7 +62,7 @@ class WaveletMatrix:
             res <<= 1
             if self.mat[d][i]:
                 res |= 1
-                i = self.mat[d].rank1(i) + self.mid[d]
+                i = self.mat[d].rank1(i) + self.zs[d]
             else:
                 i = self.mat[d].rank0(i)
         return res
@@ -70,8 +70,8 @@ class WaveletMatrix:
     def rank(self, l: int, r: int, val: int) -> int:
         for d in range(self.maxlog):
             if val >> (self.maxlog - d - 1) & 1:
-                l = self.mat[d].rank1(l) + self.mid[d]
-                r = self.mat[d].rank1(r) + self.mid[d]
+                l = self.mat[d].rank1(l) + self.zs[d]
+                r = self.mat[d].rank1(r) + self.zs[d]
             else:
                 l = self.mat[d].rank0(l)
                 r = self.mat[d].rank0(r)
@@ -83,8 +83,8 @@ class WaveletMatrix:
             res <<= 1
             cntl, cntr = self.mat[d].rank0(l), self.mat[d].rank0(r)
             if k >= cntr - cntl:
-                l = self.mat[d].rank1(l) + self.mid[d]
-                r = self.mat[d].rank1(r) + self.mid[d]
+                l = self.mat[d].rank1(l) + self.zs[d]
+                r = self.mat[d].rank1(r) + self.zs[d]
                 res |= 1
                 k -= cntr - cntl
             else:
@@ -103,8 +103,8 @@ class WaveletMatrix:
         for d in range(self.maxlog):
             if upper >> (self.maxlog - d - 1) & 1:
                 res += self.mat[d].rank0(r) - self.mat[d].rank0(l)
-                l = self.mat[d].rank1(l) + self.mid[d]
-                r = self.mat[d].rank1(r) + self.mid[d]
+                l = self.mat[d].rank1(l) + self.zs[d]
+                r = self.mat[d].rank1(r) + self.zs[d]
             else:
                 l = self.mat[d].rank0(l)
                 r = self.mat[d].rank0(r)

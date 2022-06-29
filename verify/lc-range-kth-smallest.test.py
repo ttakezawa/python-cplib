@@ -9,12 +9,15 @@ def input() -> bytes:
 
 
 def main():
-    _n, q = map(int, input().split())
-    a = [int(x) for x in input().split()]
+    _, q = map(int, input().split())
+    a = list(map(int, input().split()))
+    queries = [list(map(int, input().split())) for _ in range(q)]
+
     cwm = CompressedWaveletMatrix(a)
-    for _ in range(q):
-        a, b, c = map(int, input().split())
-        print(cwm.kth_smallest(a, b, c))
+    ans = []
+    for l, r, k in queries:
+        ans.append(cwm.kth_smallest(l, r, k))
+    print("\n".join(map(str, ans)))
 
 
 main()
