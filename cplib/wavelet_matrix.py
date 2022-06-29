@@ -1,15 +1,16 @@
+# Originated from https://github.com/Neterukun1993/Library/blob/master/DataStructure/Wavelet/WaveletMatrix.py
 from bisect import bisect_left
 from typing import List, Optional
 
-# Originated from https://github.com/Neterukun1993/Library/blob/master/DataStructure/Wavelet/WaveletMatrix.py
+
 class BitVector:
-    __slots__ = ("block_num", "bit", "count")
+    __slots__ = ("block_num", "bit", "cnt")
 
     def __init__(self, size: int):
         # self.BLOCK_WIDTH = 32
         self.block_num = (size + 31) >> 5
         self.bit = [0] * self.block_num
-        self.count = [0] * self.block_num
+        self.cnt = [0] * self.block_num
 
     def __getitem__(self, i: int) -> int:
         return (self.bit[i >> 5] >> (i & 31)) & 1
@@ -19,24 +20,16 @@ class BitVector:
 
     def build(self) -> None:
         for i in range(self.block_num - 1):
-            self.count[i + 1] = self.count[i] + self.popcount(self.bit[i])
-
-    def popcount(self, x: int) -> int:
-        x = x - ((x >> 1) & 0x55555555)
-        x = (x & 0x33333333) + ((x >> 2) & 0x33333333)
-        x = (x + (x >> 4)) & 0x0F0F0F0F
-        x = x + (x >> 8)
-        x = x + (x >> 16)
-        return x & 0x0000007F
+            self.cnt[i + 1] = self.cnt[i] + _popcnt(self.bit[i])
 
     def access(self, i: int) -> int:
         return (self.bit[i >> 5] >> (i & 31)) & 1
 
-    def rank(self, r: int, f: int) -> int:
-        res = self.count[r >> 5] + self.popcount(
-            self.bit[r >> 5] & ((1 << (r & 31)) - 1)
-        )
-        return res if f else r - res
+    def rank0(self, r: int) -> int:
+        return r - self.cnt[r >> 5] - _popcnt(self.bit[r >> 5] & ((1 << (r & 31)) - 1))
+
+    def rank1(self, r: int) -> int:
+        return self.cnt[r >> 5] + _popcnt(self.bit[r >> 5] & ((1 << (r & 31)) - 1))
 
 
 class WaveletMatrix:
@@ -69,29 +62,29 @@ class WaveletMatrix:
             res <<= 1
             if self.mat[d][i]:
                 res |= 1
-                i = self.mat[d].rank(i, 1) + self.mid[d]
+                i = self.mat[d].rank1(i) + self.mid[d]
             else:
-                i = self.mat[d].rank(i, 0)
+                i = self.mat[d].rank0(i)
         return res
 
     def rank(self, l: int, r: int, val: int) -> int:
         for d in range(self.maxlog):
             if val >> (self.maxlog - d - 1) & 1:
-                l = self.mat[d].rank(l, 1) + self.mid[d]
-                r = self.mat[d].rank(r, 1) + self.mid[d]
+                l = self.mat[d].rank1(l) + self.mid[d]
+                r = self.mat[d].rank1(r) + self.mid[d]
             else:
-                l = self.mat[d].rank(l, 0)
-                r = self.mat[d].rank(r, 0)
+                l = self.mat[d].rank0(l)
+                r = self.mat[d].rank0(r)
         return r - l
 
     def quantile(self, l: int, r: int, k: int) -> int:
         res = 0
         for d in range(self.maxlog):
             res <<= 1
-            cntl, cntr = self.mat[d].rank(l, 0), self.mat[d].rank(r, 0)
+            cntl, cntr = self.mat[d].rank0(l), self.mat[d].rank0(r)
             if k >= cntr - cntl:
-                l = self.mat[d].rank(l, 1) + self.mid[d]
-                r = self.mat[d].rank(r, 1) + self.mid[d]
+                l = self.mat[d].rank1(l) + self.mid[d]
+                r = self.mat[d].rank1(r) + self.mid[d]
                 res |= 1
                 k -= cntr - cntl
             else:
@@ -109,12 +102,12 @@ class WaveletMatrix:
         res = 0
         for d in range(self.maxlog):
             if upper >> (self.maxlog - d - 1) & 1:
-                res += self.mat[d].rank(r, 0) - self.mat[d].rank(l, 0)
-                l = self.mat[d].rank(l, 1) + self.mid[d]
-                r = self.mat[d].rank(r, 1) + self.mid[d]
+                res += self.mat[d].rank0(r) - self.mat[d].rank0(l)
+                l = self.mat[d].rank1(l) + self.mid[d]
+                r = self.mat[d].rank1(r) + self.mid[d]
             else:
-                l = self.mat[d].rank(l, 0)
-                r = self.mat[d].rank(r, 0)
+                l = self.mat[d].rank0(l)
+                r = self.mat[d].rank0(r)
         return res
 
     def range_freq(self, l: int, r: int, lower: int, upper: int) -> int:
@@ -136,8 +129,7 @@ class CompressedWaveletMatrix:
         self.vals = sorted(set(array))
         self.comp = {val: idx for idx, val in enumerate(self.vals)}
         array = [self.comp[val] for val in array]
-        MAXLOG = len(self.vals).bit_length()
-        self.wm = WaveletMatrix(array, MAXLOG)
+        self.wm = WaveletMatrix(array, len(self.vals).bit_length())
 
     def access(self, i: int) -> int:
         return self.vals[self.wm.access(i)]
@@ -165,3 +157,12 @@ class CompressedWaveletMatrix:
         lower = bisect_left(self.vals, lower)
         res = self.wm.next_val(l, r, lower)
         return None if res is None else self.vals[res]
+
+
+def _popcnt(x: int) -> int:
+    x = x - ((x >> 1) & 0x55555555)
+    x = (x & 0x33333333) + ((x >> 2) & 0x33333333)
+    x = (x + (x >> 4)) & 0x0F0F0F0F
+    x = x + (x >> 8)
+    x = x + (x >> 16)
+    return x & 0x3F
