@@ -1,8 +1,10 @@
 # verification-helper: PROBLEM http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_5_A
-
+import sys
 from typing import Dict, List, Tuple
 from cplib.rerooting_dp import rerooting_dp
 
+def input() -> bytes:
+    return sys.stdin.buffer.readline()
 
 def main():
     n = int(input())
