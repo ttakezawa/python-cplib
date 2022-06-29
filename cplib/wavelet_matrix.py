@@ -1,7 +1,7 @@
 # Originated from https://github.com/Neterukun1993/Library/blob/master/DataStructure/Wavelet/WaveletMatrix.py
+from array import array
 from bisect import bisect_left
 from typing import List, Optional
-from array import array
 
 
 class BitVector:
@@ -35,17 +35,17 @@ class BitVector:
 class WaveletMatrix:
     __slots__ = ("maxlog", "n", "mat", "zs")
 
-    def __init__(self, array: List[int], MAXLOG: int = 32):
+    def __init__(self, vals: List[int], MAXLOG: int = 32):
         self.maxlog = MAXLOG
-        self.n = len(array)
+        self.n = len(vals)
         self.mat: List[BitVector] = []
-        self.zs: List[int] = []
+        self.zs = array("l", [0] * self.maxlog)
 
         for d in reversed(range(self.maxlog)):
             vec = BitVector(self.n + 1)
             ls: List[int] = []
             rs: List[int] = []
-            for i, val in enumerate(array):
+            for i, val in enumerate(vals):
                 if (val >> d) & 1:
                     rs.append(val)
                     vec.set(i)
@@ -53,8 +53,8 @@ class WaveletMatrix:
                     ls.append(val)
             vec.build()
             self.mat.append(vec)
-            self.zs.append(len(ls))
-            array = ls + rs
+            self.zs[self.maxlog - d - 1] = len(ls)
+            vals = ls + rs
 
     def access(self, i: int) -> int:
         res = 0
@@ -125,11 +125,11 @@ class WaveletMatrix:
 class CompressedWaveletMatrix:
     __slots__ = ("vals", "comp", "wm")
 
-    def __init__(self, array: List[int]):
-        self.vals = sorted(set(array))
+    def __init__(self, vals: List[int]):
+        self.vals = sorted(set(vals))
         self.comp = {val: idx for idx, val in enumerate(self.vals)}
-        array = [self.comp[val] for val in array]
-        self.wm = WaveletMatrix(array, len(self.vals).bit_length())
+        vals = [self.comp[val] for val in vals]
+        self.wm = WaveletMatrix(vals, len(self.vals).bit_length())
 
     def access(self, i: int) -> int:
         return self.vals[self.wm.access(i)]
