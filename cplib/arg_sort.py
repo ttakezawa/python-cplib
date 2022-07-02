@@ -1,3 +1,4 @@
+# Originated from https://nebocco.hatenablog.com/entry/2021/11/13/185816
 from functools import cmp_to_key
 from typing import List, Tuple, Union
 
