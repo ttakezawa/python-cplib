@@ -1,7 +1,7 @@
 from functools import reduce
 import math
 from operator import index
-from typing import Optional
+from typing import Iterable, List, Optional
 
 # Changed in version 3.9: Added support for an arbitrary number of arguments. Formerly, only two arguments were supported.
 def gcd(*integers: int) -> int:
@@ -60,3 +60,13 @@ def perm(n: int, k: Optional[int] = None, /) -> int:
     for x in range(n, n - k, -1):
         res *= x
     return res
+
+
+# New in version 3.8.
+# https://github.com/mozillazg/pypy/blob/release-pypy3.9-v7.3.9/pypy/module/math/interp_math.py#L153
+def dist(p: Iterable[float], q: Iterable[float], /) -> float:
+    p = list(p)
+    q = list(q)
+    if len(p) != len(q):
+        raise ValueError("both points must have the same number of dimensions")
+    return math.sqrt(sum((px - qx) ** 2.0 for px, qx in zip(p, q)))

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from cplib.math_backport import comb, gcd, lcm, perm
+from cplib.math_backport import comb, dist, gcd, lcm, perm
 
 
 class Test(TestCase):
@@ -43,3 +43,7 @@ class Test(TestCase):
             perm(2, -1)
         with self.assertRaises(ValueError):
             perm(-1, 3)
+
+    def test_dist(self) -> None:
+        assert dist((1.0, 2.0, 3.0), (4.0, 2.0, -1.0)) == 5.0
+        assert dist((1, 2, 3), (4, 2, -1)) == 5.0
