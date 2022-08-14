@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from cplib.integer import comb, gcd, lcm, perm
+from cplib.math_backport import comb, gcd, lcm, perm
 
 
 class Test(TestCase):
