@@ -1,7 +1,8 @@
-from functools import reduce
 import math
+from functools import reduce
 from operator import index
-from typing import Iterable, List, Optional
+from typing import Iterable, Optional
+
 
 # Changed in version 3.9: Added support for an arbitrary number of arguments. Formerly, only two arguments were supported.
 def gcd(*integers: int) -> int:
@@ -21,7 +22,7 @@ def _lcm(a: int, b: int) -> int:
 
 # New in version 3.8.
 # https://github.com/mozillazg/pypy/blob/release-pypy3.9-v7.3.9/pypy/module/math/app_math.py#L175
-def comb(n: int, k: int, /) -> int:
+def comb(n: int, k: int) -> int:
     n = index(n)
     k = index(k)
 
@@ -42,7 +43,7 @@ def comb(n: int, k: int, /) -> int:
 
 # New in version 3.8.
 # https://github.com/mozillazg/pypy/blob/release-pypy3.9-v7.3.9/pypy/module/math/app_math.py#L206
-def perm(n: int, k: Optional[int] = None, /) -> int:
+def perm(n: int, k: Optional[int] = None) -> int:
     n = index(n)
     if k is None:
         k = n
@@ -64,7 +65,7 @@ def perm(n: int, k: Optional[int] = None, /) -> int:
 
 # New in version 3.8.
 # https://github.com/mozillazg/pypy/blob/release-pypy3.9-v7.3.9/pypy/module/math/interp_math.py#L153
-def dist(p: Iterable[float], q: Iterable[float], /) -> float:
+def dist(p: Iterable[float], q: Iterable[float]) -> float:
     p = list(p)
     q = list(q)
     if len(p) != len(q):
