@@ -26,8 +26,10 @@ class Test(TestCase):
 
     def test_combination(self) -> None:
         fc = FactorialCache(int(5e6), mod1000000007)
-        assert fc.combination(2, 3) == 0
+        assert fc.combination(100, 2) == 4950
+        assert fc.combination(35, 11) == 417225900
+        assert fc.combination(14, 4) == 1001
+        assert fc.combination(0, 0) == 1
         assert fc.combination(2, 0) == 1
-        assert fc.combination(5, 2) == 10
-        assert fc.combination(7, 3) == 35
+        assert fc.combination(2, 3) == 0
         assert fc.factorial(100) == 437918130
