@@ -24,3 +24,15 @@ class Test(TestCase):
         assert 0 == g.lca(2, 3)
         assert 0 == g.lca(2, 4)
         assert 1 == g.lca(3, 4)
+
+    def test_find_parent(self) -> None:
+        adj: List[List[int]] = [[] for _ in range(100000)]
+        edges = [(0, 1), (2, 0), (3, 1), (1, 4), (0, 99_999)]
+        for a, b in edges:
+            adj[a].append(b)
+            adj[b].append(a)
+        g = LCAGraph(adj)
+        assert 0 == g.find_parent(0, 0)
+        assert None == g.find_parent(0, 1)
+        assert 0 == g.find_parent(1, 1)
+        assert None == g.find_parent(1, 2)

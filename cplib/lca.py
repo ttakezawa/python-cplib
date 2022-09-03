@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 
 class LCAGraph:
@@ -33,12 +33,18 @@ class LCAGraph:
         if self.depths[v] < self.depths[u]:
             v, u = u, v
         df = self.depths[v] - self.depths[u]
-        for i in range(df.bit_length()):
-            if df >> i & 1 == 1:
-                v = self.ancestors[i][v]
+        v = self.find_parent(v, df)  # type: ignore
         if v == u:
             return v
         for i in range(self.depths[v].bit_length() - 1, -1, -1):
             if self.ancestors[i][v] != self.ancestors[i][u]:
                 v, u = self.ancestors[i][v], self.ancestors[i][u]
         return self.ancestors[0][v]
+
+    def find_parent(self, v: int, dist: int) -> Optional[int]:
+        if self.depths[v] < dist:
+            return None
+        for i in range(dist.bit_length()):
+            if dist >> i & 1 == 1:
+                v = self.ancestors[i][v]
+        return v
