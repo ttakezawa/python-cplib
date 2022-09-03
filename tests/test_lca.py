@@ -36,3 +36,29 @@ class Test(TestCase):
         assert None == g.find_parent(0, 1)
         assert 0 == g.find_parent(1, 1)
         assert None == g.find_parent(1, 2)
+
+    def test_dist(self) -> None:
+        adj: List[List[int]] = [[] for _ in range(100000)]
+        edges = [(0, 1), (2, 0), (3, 1), (1, 4), (0, 99_999)]
+        for a, b in edges:
+            adj[a].append(b)
+            adj[b].append(a)
+        g = LCAGraph(adj)
+        assert 0 == g.dist(2, 2)
+        assert 1 == g.dist(0, 1)
+        assert 3 == g.dist(2, 3)
+
+    def test_goto(self) -> None:
+        adj: List[List[int]] = [[] for _ in range(100000)]
+        edges = [(0, 1), (2, 0), (3, 1), (1, 4), (0, 99_999)]
+        for a, b in edges:
+            adj[a].append(b)
+            adj[b].append(a)
+        g = LCAGraph(adj)
+        assert 0 == g.goto(0, 4, 0)
+        assert 1 == g.goto(0, 4, 1)
+        assert 4 == g.goto(0, 4, 2)
+        assert None == g.goto(0, 4, 3)
+        assert 0 == g.goto(2, 3, 1)
+        assert 3 == g.goto(2, 3, 3)
+        assert None == g.goto(2, 3, 4)

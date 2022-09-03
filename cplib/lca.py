@@ -8,7 +8,7 @@ class LCAGraph:
     )
 
     def __init__(self, adj: List[List[int]], root: int = 0) -> None:
-        self.depths = [0] * len(adj)
+        self.depths: list[int] = [0] * len(adj)
 
         # prepare depths[v] and parents[v] with DFS
         self.depths[root] = 0
@@ -32,8 +32,7 @@ class LCAGraph:
     def lca(self, v: int, u: int) -> int:
         if self.depths[v] < self.depths[u]:
             v, u = u, v
-        df = self.depths[v] - self.depths[u]
-        v = self.find_parent(v, df)  # type: ignore
+        v = self.find_parent(v, self.depths[v] - self.depths[u])  # type: ignore
         if v == u:
             return v
         for i in range(self.depths[v].bit_length() - 1, -1, -1):
@@ -48,3 +47,15 @@ class LCAGraph:
             if dist >> i & 1 == 1:
                 v = self.ancestors[i][v]
         return v
+
+    def dist(self, v: int, u: int) -> int:
+        return self.depths[v] + self.depths[u] - 2 * self.depths[self.lca(v, u)]
+
+    def goto(self, src: int, dst: int, dist: int) -> Optional[int]:
+        lca_depth = self.depths[self.lca(src, dst)]
+        d1, d2 = self.depths[src] - lca_depth, self.depths[dst] - lca_depth
+        if d1 + d2 < dist:
+            return None
+        if dist <= d1:
+            return self.find_parent(src, dist)
+        return self.find_parent(dst, d1 + d2 - dist)
