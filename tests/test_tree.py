@@ -1,8 +1,7 @@
-from distutils.command.build import build
 from typing import List
 from unittest import TestCase
 
-from cplib.graph import diameter, build_dist
+from cplib.tree import build_dist, diameter
 
 
 class Test(TestCase):
