@@ -24,8 +24,7 @@ def diameter(adj: List[List[int]]) -> Tuple[int, int, List[int]]:
     while v != A:
         v = backs[v]
         path.append(v)
-    path.reverse()
-    return A, B, path
+    return B, A, path
 
 
 def find_farthest(adj: List[List[int]], src: int) -> Tuple[int, List[int]]:
