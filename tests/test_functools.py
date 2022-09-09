@@ -13,4 +13,8 @@ class Test(TestCase):
             b = yield fib(n - 2)
             yield a + b
 
+        assert fib(3) == 2
+        assert fib(3) == 2
+        assert fib(4) == 3
+        assert fib(2) == 1
         assert fib(50) == 12586269025
