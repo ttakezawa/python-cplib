@@ -39,7 +39,7 @@ class Segtree(Generic[S]):
         for i in range(self._n):
             self._d[self._size + i] = v[i]
         for i in range(self._size - 1, 0, -1):
-            self._update(i)
+            self._d[i] = self._op(self._d[2 * i], self._d[2 * i + 1])
 
     def set(self, p: int, x: S) -> None:
         assert 0 <= p < self._n
@@ -47,7 +47,8 @@ class Segtree(Generic[S]):
         p += self._size
         self._d[p] = x
         for i in range(1, self._log + 1):
-            self._update(p >> i)
+            k = p >> i
+            self._d[k] = self._op(self._d[2 * k], self._d[2 * k + 1])
 
     def get(self, p: int) -> S:
         assert 0 <= p < self._n
@@ -129,9 +130,6 @@ class Segtree(Generic[S]):
             sm = self._op(self._d[right], sm)
 
         return 0
-
-    def _update(self, k: int) -> None:
-        self._d[k] = self._op(self._d[2 * k], self._d[2 * k + 1])
 
     def __len__(self) -> int:
         return self._n
