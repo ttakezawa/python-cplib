@@ -2,11 +2,10 @@
 # - https://github.com/cheran-senthil/PyRival/blob/master/pyrival/misc/bootstrap.py
 # - https://pyrival.readthedocs.io/en/latest/bootstrap.html
 
-from types import GeneratorType
-from typing import Iterator
-
 
 def bootstrap(f, stack=[]):
+    from types import GeneratorType
+
     def wrappedfunc(*args, **kwargs):
         if stack:
             return f(*args, **kwargs)
@@ -27,6 +26,8 @@ def bootstrap(f, stack=[]):
 
 
 def bootstrap_with_memo(f, stack=[], cache={}):
+    from typing import Iterator
+
     def wrappedfunc(*args, **kwargs):
         key = args + tuple(kwargs.items())
         if stack:

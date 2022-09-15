@@ -1,7 +1,7 @@
-from typing import List, TypeVar
+from typing import List, TypeVar as _TypeVar
 
-T = TypeVar("T")
+_T = _TypeVar("_T")
 
 
-def rot_90(grid: List[List[T]]) -> List[List[T]]:
+def rot_90(grid: List[List[_T]]) -> List[List[_T]]:
     return [list(reversed(v)) for v in zip(*grid)]

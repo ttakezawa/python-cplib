@@ -1,7 +1,6 @@
-from typing import Iterator, List, Union
-
-
 class Matrix:
+    from typing import Iterator, List, Union
+
     __slots__ = "_inner"
 
     def __init__(self, n: int, m: int, default: int = 0) -> None:
@@ -170,7 +169,7 @@ class Matrix:
         return ret
 
     def __ipow__(self, exp: int) -> "Matrix":
-        self._replace(self ** exp)
+        self._replace(self**exp)
         return self
 
     def pow_mod(self, exp: int, mod: int) -> "Matrix":

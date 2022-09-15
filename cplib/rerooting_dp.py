@@ -1,12 +1,17 @@
 # Originated from
 # - https://null-mn.hatenablog.com/entry/2020/04/14/124151
 # - https://algo-logic.info/tree-dp/
-from collections import deque
-from typing import Callable, Deque, Generator, List, Tuple, TypeVar
+
+from typing import Callable, List, Tuple, TypeVar
 
 
 class _Tree:
+    from typing import Generator
+
     def __init__(self, adj: List[List[int]], root: int):
+        import collections
+        from typing import Deque
+
         n = len(adj)
         self.adj = adj
         self.root = root
@@ -16,7 +21,8 @@ class _Tree:
 
         seen = [False] * n
         seen[0] = True
-        q: Deque[Tuple[int, int]] = deque()
+
+        q: Deque[Tuple[int, int]] = collections.deque()
         q.append((root, 0))
         while q:
             v, depth = q.popleft()
@@ -40,16 +46,16 @@ class _Tree:
                 yield v
 
 
-S = TypeVar("S")
+_S = TypeVar("_S")
 
 
 def rerooting_dp(
     adj: List[List[int]],
-    identity: S,
-    merge: Callable[[S, S], S],
-    add_edge: Callable[[S, int, int], S],
-    add_children: Callable[[S, int], S],
-) -> List[S]:
+    identity: _S,
+    merge: Callable[[_S, _S], _S],
+    add_edge: Callable[[_S, int, int], _S],
+    add_children: Callable[[_S, int], _S],
+) -> List[_S]:
     """全方位木DP
 
     Example::

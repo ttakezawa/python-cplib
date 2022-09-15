@@ -1,11 +1,12 @@
 # Originated from https://github.com/not522/ac-library-python/blob/master/atcoder/lazysegtree.py
-from typing import Callable, Generic, Iterable, TypeVar
+from typing import Callable, Generic
+from typing import Iterable as _Iterable
+from typing import TypeVar
 
-S = TypeVar("S")
-F = TypeVar("F")
+_S, _F = TypeVar("_S"), TypeVar("_F")
 
 
-class LazySegtree(Generic[S, F]):
+class LazySegtree(Generic[_S, _F]):
     __slots__ = (
         "_op",
         "_e",
@@ -21,12 +22,12 @@ class LazySegtree(Generic[S, F]):
 
     def __init__(
         self,
-        v: Iterable[S],
-        e: S,
-        op: Callable[[S, S], S],
-        id: F,
-        mapping: Callable[[F, S], S],
-        composition: Callable[[F, F], F],
+        v: _Iterable[_S],
+        e: _S,
+        op: Callable[[_S, _S], _S],
+        id: _F,
+        mapping: Callable[[_F, _S], _S],
+        composition: Callable[[_F, _F], _F],
     ) -> None:
         self._op = op
         self._e = e
@@ -45,7 +46,7 @@ class LazySegtree(Generic[S, F]):
         for i in range(self._size - 1, 0, -1):
             self._update(i)
 
-    def set(self, p: int, x: S) -> None:
+    def set(self, p: int, x: _S) -> None:
         assert 0 <= p < self._n
 
         p += self._size
@@ -55,7 +56,7 @@ class LazySegtree(Generic[S, F]):
         for i in range(1, self._log + 1):
             self._update(p >> i)
 
-    def get(self, p: int) -> S:
+    def get(self, p: int) -> _S:
         assert 0 <= p < self._n
 
         p += self._size
@@ -63,7 +64,7 @@ class LazySegtree(Generic[S, F]):
             self._push(p >> i)
         return self._d[p]
 
-    def prod_range(self, left: int, right: int) -> S:
+    def prod_range(self, left: int, right: int) -> _S:
         assert 0 <= left <= right <= self._n
 
         if left == right:
@@ -92,10 +93,10 @@ class LazySegtree(Generic[S, F]):
 
         return self._op(sml, smr)
 
-    def all_prod(self) -> S:
+    def all_prod(self) -> _S:
         return self._d[1]
 
-    def apply_point(self, p: int, f: F) -> None:
+    def apply_point(self, p: int, f: _F) -> None:
         assert 0 <= p < self._n
         p += self._size
         for i in range(self._log, 0, -1):
@@ -104,7 +105,7 @@ class LazySegtree(Generic[S, F]):
         for i in range(1, self._log + 1):
             self._update(p >> i)
 
-    def apply_range(self, left: int, right: int, f: F) -> None:
+    def apply_range(self, left: int, right: int, f: _F) -> None:
         assert 0 <= left <= right <= self._n
         if left == right:
             return
@@ -138,7 +139,7 @@ class LazySegtree(Generic[S, F]):
             if ((right >> i) << i) != right:
                 self._update((right - 1) >> i)
 
-    def max_right(self, left: int, g: Callable[[S], bool]) -> int:
+    def max_right(self, left: int, g: Callable[[_S], bool]) -> int:
         assert 0 <= left <= self._n
         assert g(self._e)
 
@@ -168,7 +169,7 @@ class LazySegtree(Generic[S, F]):
 
         return self._n
 
-    def min_left(self, right: int, g: Callable[[S], bool]) -> int:
+    def min_left(self, right: int, g: Callable[[_S], bool]) -> int:
         assert 0 <= right <= self._n
         assert g(self._e)
 
@@ -201,7 +202,7 @@ class LazySegtree(Generic[S, F]):
     def _update(self, k: int) -> None:
         self._d[k] = self._op(self._d[2 * k], self._d[2 * k + 1])
 
-    def _all_apply(self, k: int, f: F) -> None:
+    def _all_apply(self, k: int, f: _F) -> None:
         self._d[k] = self._mapping(f, self._d[k])
         if k < self._size:
             self._lz[k] = self._composition(f, self._lz[k])
@@ -214,10 +215,10 @@ class LazySegtree(Generic[S, F]):
     def __len__(self) -> int:
         return self._n
 
-    def __getitem__(self, key: int) -> S:
+    def __getitem__(self, key: int) -> _S:
         return self.get(key)
 
-    def add(self, p: int, increment: S) -> None:
+    def add(self, p: int, increment: _S) -> None:
         self.set(p, self.get(p) + increment)  # type: ignore
 
 

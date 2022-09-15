@@ -1,10 +1,11 @@
 import sys
 
+__all__ = ["dbg"]
+
 if len(sys.argv) > 0 and sys.argv[0] == "./Main.py":
     # then, it means AtCoder
     def dbg(*args: object) -> None:
         pass
-
 
 else:
     import inspect

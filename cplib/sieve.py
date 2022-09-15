@@ -1,7 +1,6 @@
 # Originated from
 # - https://drken1215.hatenablog.com/entry/2020/10/31/203300
 # - https://atcoder.jp/contests/abc177/editorial/82
-from collections import defaultdict
 from typing import Dict, List
 
 
@@ -31,6 +30,8 @@ class Sieve:
 
     def factorize(self, n: int) -> Dict[int, int]:
         """SPFによる素因数分解 O(log n): returns Dict[prime => count]"""
+        from collections import defaultdict
+
         ret: Dict[int, int] = defaultdict(int)
         while n > 1:
             ret[self._min_factor[n]] += 1

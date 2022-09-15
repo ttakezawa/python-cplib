@@ -1,10 +1,10 @@
-from collections import defaultdict
-from typing import Dict
+from collections import defaultdict as __defaultdict
+from typing import Dict as _Dict
 
 
-def factorize(n: int) -> Dict[int, int]:
+def factorize(n: int) -> _Dict[int, int]:
     """O(√n)"""
-    ret: Dict[int, int] = defaultdict(int)
+    ret: _Dict[int, int] = __defaultdict(int)
     i = 2
     while i * i <= n:
         while n % i == 0:

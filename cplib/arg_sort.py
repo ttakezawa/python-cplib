@@ -1,5 +1,4 @@
 # Originated from https://nebocco.hatenablog.com/entry/2021/11/13/185816
-from functools import cmp_to_key
 from typing import List, Tuple, Union
 
 Num = Union[int, float]
@@ -7,7 +6,23 @@ Point = Tuple[Num, Num]
 
 
 def arg_sort(points: List[Point]):
+    from functools import cmp_to_key
+
     points.sort(key=cmp_to_key(arg_cmp))
+
+
+def arg_cmp(p: Point, q: Point) -> int:
+    pa, qa = area(p), area(q)
+    if pa < qa:
+        return -1
+    elif pa > qa:
+        return 1
+    z = p[0] * q[1] - p[1] * q[0]
+    if z > 0:
+        return -1
+    elif z < 0:
+        return 1
+    return 0
 
 
 def area(p: Point) -> int:
@@ -24,17 +39,3 @@ def area(p: Point) -> int:
             return 3
         else:
             return 4
-
-
-def arg_cmp(p: Point, q: Point) -> int:
-    pa, qa = area(p), area(q)
-    if pa < qa:
-        return -1
-    elif pa > qa:
-        return 1
-    z = p[0] * q[1] - p[1] * q[0]
-    if z > 0:
-        return -1
-    elif z < 0:
-        return 1
-    return 0
