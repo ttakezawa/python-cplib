@@ -23,7 +23,7 @@ class Segtree(Generic[_S]):
         """
         Examples::
 
-            Segtree(v, 0, euclidean.gcd)
+            Segtree(v, 0, math_backport.gcd)
             Segtree(v, 0, operator.add)
             Segtree(v, -inf, max)
             Segtree(v, inf, min)
