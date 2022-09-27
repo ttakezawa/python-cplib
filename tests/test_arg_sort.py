@@ -1,8 +1,9 @@
 from math import atan2, pi
+from tkinter.ttk import LabelFrame
 from typing import List
 from unittest import TestCase
 
-from cplib.arg_sort import Point, arg_sort
+from cplib.arg_sort import Arg, Point, arg_sort
 
 
 class Test(TestCase):
@@ -29,6 +30,31 @@ class Test(TestCase):
         points2.sort(key=lambda p: self.__class__._angle(p))
 
         assert points == points2
+
+    def test_arg_object(self) -> None:
+        points: List[Point] = [
+            (2, 1),
+            (1, 8),
+            (8, 1),
+            (2, 3),
+            (5, 4),
+            (0, 0),
+            (3, -5),
+            (3, -4),
+            (8, -2),
+            (4, -3),
+            (-1, 2),
+            (-1, -2),
+            (0, 0),
+        ]
+        args = list(map(lambda p: Arg(p[0], p[1]), points))
+        args.sort()
+
+        # rough sort
+        points.sort(key=lambda p: self.__class__._angle(p))
+
+        arg_points = list(map(lambda arg: (arg.x, arg.y), args))
+        assert arg_points == points
 
     @staticmethod
     def _angle(p: Point) -> float:

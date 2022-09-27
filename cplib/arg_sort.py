@@ -5,6 +5,31 @@ Num = Union[int, float]
 Point = Tuple[Num, Num]
 
 
+class Arg:
+    def __init__(self, x: Num, y: Num):
+        self.x, self.y = x, y
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Arg):
+            return NotImplemented
+        return self.x * other.y == self.y * other.x
+
+    def __lt__(self, other: "Arg"):
+        return arg_cmp((self.x, self.y), (other.x, other.y)) < 0
+
+    def __ne__(self, other: object):
+        return not self.__eq__(other)
+
+    def __le__(self, other: "Arg"):
+        return self.__lt__(other) or self.__eq__(other)
+
+    def __gt__(self, other: "Arg"):
+        return not self.__le__(other)
+
+    def __ge__(self, other: "Arg"):
+        return not self.__lt__(other)
+
+
 def arg_sort(points: List[Point]):
     from functools import cmp_to_key
 
