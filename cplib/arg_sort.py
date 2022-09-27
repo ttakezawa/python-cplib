@@ -29,13 +29,10 @@ def area(p: Point) -> int:
     x, y = p[0], p[1]
     if x == 0 and y == 0:
         return 0
-    if y > 0:
-        if x > 0:
-            return 1
-        else:
-            return 2
-    else:
-        if x < 0:
-            return 3
-        else:
-            return 4
+    if x > 0 and y >= 0:
+        return 1
+    if x <= 0 and y > 0:
+        return 2
+    if x < 0 and y <= 0:
+        return 3
+    return 4
