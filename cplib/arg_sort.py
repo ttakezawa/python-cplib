@@ -1,13 +1,23 @@
 # Originated from https://nebocco.hatenablog.com/entry/2021/11/13/185816
+import math
 from typing import List, Tuple, Union
 
 Num = Union[int, float]
 Point = Tuple[Num, Num]
 
 
-class Arg:
+class Arg:  # also known as phase
     def __init__(self, x: Num, y: Num):
         self.x, self.y = x, y
+
+    def radians(self):
+        return math.atan2(self.y, self.x)
+
+    def degrees(self):
+        return math.degrees(self.radians())
+
+    def area(self):
+        return area((self.x, self.y))
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Arg):

@@ -1,5 +1,4 @@
 from math import atan2, pi
-from tkinter.ttk import LabelFrame
 from typing import List
 from unittest import TestCase
 
