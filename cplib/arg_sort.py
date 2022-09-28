@@ -17,12 +17,12 @@ class Arg:  # also known as phase
         return math.degrees(self.radians())
 
     def area(self):
-        return area((self.x, self.y))
+        return _area((self.x, self.y))
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Arg):
             return NotImplemented
-        return self.x * other.y == self.y * other.x
+        return _isclose(self.x * other.y, self.y * other.x)
 
     def __lt__(self, other: "Arg"):
         return arg_cmp((self.x, self.y), (other.x, other.y)) < 0
@@ -40,6 +40,12 @@ class Arg:  # also known as phase
         return not self.__lt__(other)
 
 
+def _isclose(x: Num, y: Num):
+    if isinstance(x, int) and isinstance(y, int):
+        return x == y
+    return math.isclose(x, y, abs_tol=1e-15)
+
+
 def arg_sort(points: List[Point]):
     from functools import cmp_to_key
 
@@ -47,20 +53,20 @@ def arg_sort(points: List[Point]):
 
 
 def arg_cmp(p: Point, q: Point) -> int:
-    pa, qa = area(p), area(q)
+    pa, qa = _area(p), _area(q)
     if pa < qa:
         return -1
     elif pa > qa:
         return 1
-    z = p[0] * q[1] - p[1] * q[0]
-    if z > 0:
+    ad, bc = p[0] * q[1], p[1] * q[0]
+    if _isclose(ad, bc):
+        return 0
+    if ad > bc:
         return -1
-    elif z < 0:
-        return 1
-    return 0
+    return 1
 
 
-def area(p: Point) -> int:
+def _area(p: Point) -> int:
     x, y = p[0], p[1]
     if x == 0 and y == 0:
         return 0

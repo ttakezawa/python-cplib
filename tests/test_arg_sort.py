@@ -1,4 +1,5 @@
-from math import atan2, pi
+import math
+import sys
 from typing import List
 from unittest import TestCase
 
@@ -46,6 +47,7 @@ class Test(TestCase):
             (-1, -2),
             (0, 0),
         ]
+        # convert to Arg objects
         args = list(map(lambda p: Arg(p[0], p[1]), points))
         args.sort()
 
@@ -55,11 +57,38 @@ class Test(TestCase):
         arg_points = list(map(lambda arg: (arg.x, arg.y), args))
         assert arg_points == points
 
+    def test_arg_float(self) -> None:
+        assert Arg(1.0, 1.0) == Arg(0.1, 0.1)
+        assert Arg(1.0, 0.0) != Arg(0.0, 1.0)
+        assert Arg(0.0, 0.0) == Arg(0, 0)
+
+        assert Arg(0.1, 0.5) == Arg(0.000001, 0.000005)
+        assert Arg(0.1, 0.5) <= Arg(0.000001, 0.000005)
+        assert Arg(0.1, 0.5) >= Arg(0.000001, 0.000005)
+        assert not (Arg(0.1, 0.5) < Arg(0.000001, 0.000005))
+        assert not (Arg(0.1, 0.5) > Arg(0.000001, 0.000005))
+
+        assert Arg(0.1, 0.5) == Arg(0.00000001, 0.00000005)
+        assert Arg(0.1, 0.5) <= Arg(0.00000001, 0.00000005)
+        assert Arg(0.1, 0.5) >= Arg(0.00000001, 0.00000005)
+        assert not (Arg(0.1, 0.5) < Arg(0.00000001, 0.00000005))
+        assert not (Arg(0.1, 0.5) > Arg(0.00000001, 0.00000005))
+
+        almost_zero = math.sin(math.pi)
+
+        # Because of the speficiation of math.isclose, we should take care of zero.
+        # SEE: https://note.nkmk.me/python-math-isclose/
+        assert not math.isclose(almost_zero, 0.0)
+        assert math.isclose(almost_zero, 0.0, abs_tol=1e-15)
+
+        assert Arg(almost_zero, 1) == Arg(-almost_zero, 5)
+        assert Arg(almost_zero, -almost_zero) == Arg(almost_zero, almost_zero)
+
     @staticmethod
     def _angle(p: Point) -> float:
         x, y = p[0], p[1]
-        rad = atan2(y, x)
-        ang = rad * 180 / pi
+        rad = math.atan2(y, x)
+        ang = rad * 180 / math.pi
         if ang < 0:
             ang += 360
         return ang
