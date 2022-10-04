@@ -1,6 +1,7 @@
+from importlib.machinery import FrozenImporter
 from unittest import TestCase
 
-from cplib.math_backport import comb, dist, gcd, lcm, perm
+from cplib.math_backport import bit_count, comb, dist, gcd, lcm, perm
 
 
 class Test(TestCase):
@@ -47,3 +48,7 @@ class Test(TestCase):
     def test_dist(self) -> None:
         assert dist((1.0, 2.0, 3.0), (4.0, 2.0, -1.0)) == 5.0
         assert dist((1, 2, 3), (4, 2, -1)) == 5.0
+
+    def test_bit_count(self) -> None:
+        for x in [0, 1, 2, 1234, 411234, (1 << 64) - 1, 10**19]:
+            assert bin(x).count("1") == bit_count(x)

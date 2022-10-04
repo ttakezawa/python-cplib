@@ -23,6 +23,7 @@ def _lcm(a: int, b: int) -> int:
 # New in version 3.8.
 # https://github.com/mozillazg/pypy/blob/release-pypy3.9-v7.3.9/pypy/module/math/app_math.py#L175
 def comb(n: int, k: int) -> int:
+    """Number of ways to choose k items from n items without repetition and without order."""
     n = index(n)
     k = index(k)
 
@@ -44,6 +45,7 @@ def comb(n: int, k: int) -> int:
 # New in version 3.8.
 # https://github.com/mozillazg/pypy/blob/release-pypy3.9-v7.3.9/pypy/module/math/app_math.py#L206
 def perm(n: int, k: Optional[int] = None) -> int:
+    """Number of ways to choose k items from n items without repetition and with order."""
     n = index(n)
     if k is None:
         k = n
@@ -66,8 +68,21 @@ def perm(n: int, k: Optional[int] = None) -> int:
 # New in version 3.8.
 # https://github.com/mozillazg/pypy/blob/release-pypy3.9-v7.3.9/pypy/module/math/interp_math.py#L153
 def dist(p: Iterable[float], q: Iterable[float]) -> float:
+    """Return the Euclidean distance between two points p and q."""
     p = list(p)
     q = list(q)
     if len(p) != len(q):
         raise ValueError("both points must have the same number of dimensions")
     return math.sqrt(sum((px - qx) ** 2.0 for px, qx in zip(p, q)))
+
+
+# New in version 3.10.
+def bit_count(x: int):
+    """Return the number of ones in the binary representation of the absolute value of the integer. This is also known as the population count."""
+    x -= (x >> 1) & 0x5555555555555555
+    x = (x & 0x3333333333333333) + ((x >> 2) & 0x3333333333333333)
+    x = (x + (x >> 4)) & 0x0F0F0F0F0F0F0F0F
+    x += x >> 8
+    x += x >> 16
+    x += x >> 32
+    return x & 0x7F
