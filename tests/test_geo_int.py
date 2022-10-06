@@ -1,5 +1,3 @@
-import math
-import sys
 from typing import List
 from unittest import TestCase
 
@@ -62,9 +60,7 @@ class Test(TestCase):
 
     @staticmethod
     def _angle(p: Point) -> float:
-        x, y = p[0], p[1]
-        rad = math.atan2(y, x)
-        ang = rad * 180 / math.pi
-        if ang < 0:
-            ang += 360
-        return ang
+        deg = Arg(p).degrees()
+        if deg < 0:
+            deg += 360
+        return deg

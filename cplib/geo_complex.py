@@ -1,40 +1,51 @@
+import cmath
 import math
-from typing import List, Tuple
-
-Point = Tuple[int, int]
+from typing import List
 
 
-def dot_product(a: Point, b: Point):
-    return a[0] * b[0] + a[1] * b[1]
+def dot_product(a: complex, b: complex):
+    return a.real * b.real + a.imag * b.imag
 
 
-def cross_product(a: Point, b: Point):
-    return a[0] * b[1] - a[1] * b[0]
+def cross_product(a: complex, b: complex):
+    return a.real * b.imag - a.imag * b.real
 
 
-def ccw(a: Point, b: Point, c: Point):
-    t = cross_product((b[0] - a[0], b[1] - a[1]), (c[0] - a[0], c[1] - a[1]))
+def _iszero(x: float):
+    return math.isclose(x, 0, abs_tol=1e-15)
+
+
+def ccw(a: complex, b: complex, c: complex):
+    t = cross_product(b - a, c - a)
+    if _iszero(t):
+        return 0
     if t > 0:
         return 1
-    elif t < 0:
-        return -1
-    return 0
+    return -1
 
 
 class Arg:  # also known as phase
-    def __init__(self, p: Point):
-        self.point = p
+    def __init__(self, point: complex):
+        self.point = point
 
     @property
     def x(self):
-        return self.point[0]
+        return self.point.real
 
     @property
     def y(self):
-        return self.point[1]
+        return self.point.imag
+
+    @property
+    def real(self):
+        return self.point.real
+
+    @property
+    def imag(self):
+        return self.point.imag
 
     def radians(self):
-        return math.atan2(self.point[1], self.point[0])
+        return cmath.phase(self.point)
 
     def degrees(self):
         return math.degrees(self.radians())
@@ -63,29 +74,30 @@ class Arg:  # also known as phase
         return not self.__lt__(other)
 
 
-def arg_sort(points: List[Point]):
+def arg_sort(points: List[complex]):
     from functools import cmp_to_key
 
     points.sort(key=cmp_to_key(arg_cmp))
 
 
-def arg_cmp(p: Point, q: Point):
+def arg_cmp(p: complex, q: complex):
     pa, qa = _area(p), _area(q)
     if pa < qa:
         return -1
     elif pa > qa:
         return 1
-    return -ccw(p, q, (0, 0))
+    return -ccw(p, q, 0)
 
 
-def _area(p: Point):
-    x, y = p[0], p[1]
-    if x == 0 and y == 0:
+def _area(p: complex):
+    x, y = p.real, p.imag
+    xz, yz = _iszero(x), _iszero(y)
+    if xz and yz:
         return 0
-    if x > 0 and y >= 0:
+    if (x > 0 and not xz) and (y >= 0 or yz):  # x > 0 and y >= 0
         return 1
-    if x <= 0 and y > 0:
+    if (x <= 0 or xz) and (y > 0 and not yz):  # x <= 0 and y > 0
         return 2
-    if x < 0 and y <= 0:
+    if (x < 0 and not xz) and (y <= 0 or yz):  # x < 0 and y <= 0
         return 3
     return 4
