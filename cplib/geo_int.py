@@ -1,7 +1,7 @@
 import math
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
-Point = Tuple[int, int]
+Point = Union[Tuple[int, int], List[int]]
 
 
 def dot_product(a: Point, b: Point):
