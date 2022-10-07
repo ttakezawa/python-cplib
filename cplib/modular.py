@@ -18,9 +18,11 @@ def pow_mod(x: int, n: int, mod: int) -> int:
 
 
 def inv_mod(x: int, mod: int) -> int:
-    """xとmodは互いに素 GCD(x,mod)=1 であることが必要"""
+    """xとmodは互いに素 GCD(x,mod)=1 であることが必要。互いに素でない場合はxとmodをgcdで割っておくことを検討する"""
     assert 1 <= mod
     z = _inv_gcd(x, mod)
+    if z[0] != 1:
+        raise ValueError(f"GCD(f{x},f{mod})={z[0]}, but gcd must be 1")
     assert z[0] == 1
     return z[1]
 
