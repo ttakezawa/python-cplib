@@ -231,3 +231,30 @@ def build_lcp_array(
         lcp[rnk[i] - 1] = h
 
     return lcp
+
+
+_T = typing.TypeVar("_T", str, typing.List[int])
+
+
+def find_all(
+    s: _T,
+    sa: typing.List[int],
+    t: _T,
+):
+    l, r = -1, len(sa)
+    while r - l > 1:
+        m = l + r >> 1
+        if s[sa[m] : sa[m] + len(t)] < t:
+            l = m
+        else:
+            r = m
+    a = r
+    l, r = -1, len(sa)
+    while r - l > 1:
+        m = l + r >> 1
+        if s[sa[m] : sa[m] + len(t)] <= t:
+            l = m
+        else:
+            r = m
+    b = r
+    return sa[a:b]
