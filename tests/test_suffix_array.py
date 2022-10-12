@@ -1,12 +1,14 @@
 from unittest import TestCase
 
-from cplib.suffix_array import build_suffix_array, find_all
+from cplib.suffix_array import build_suffix_array, contain, find_all
 
 
 class Test(TestCase):
     def test_suffix_array(self) -> None:
         s = "missisippi"
         sa = build_suffix_array(s)
+
+        assert sa == [9, 6, 4, 1, 0, 8, 7, 5, 3, 2]
 
         expected = [
             "i",
@@ -27,9 +29,21 @@ class Test(TestCase):
     def test_find_all(self) -> None:
         s = "missisippi"
         sa = build_suffix_array(s)
-        assert find_all(s, sa, "") == [9, 6, 4, 1, 0, 8, 7, 5, 3, 2]
-        assert find_all(s, sa, "i") == [9, 6, 4, 1]
-        assert find_all(s, sa, "is") == [4, 1]
-        assert find_all(s, sa, "ssi") == [2]
-        assert find_all(s, sa, "ssp") == []
-        assert find_all(s, sa, "zzzzzzzzzzzzzzzz") == []
+        assert find_all(s, sa, "") == (0, 10)
+        assert find_all(s, sa, "i") == (0, 4)
+        assert find_all(s, sa, "is") == (2, 4)
+        assert find_all(s, sa, "ssi") == (9, 10)
+        assert find_all(s, sa, "ssp") == (10, 10)
+        assert find_all(s, sa, "aaaaaaaaaaaaaaaa") == (0,0)
+        assert find_all(s, sa, "zzzzzzzzzzzzzzzz") == (10,10)
+
+    def test_contain(self) -> None:
+        s = "missisippi"
+        sa = build_suffix_array(s)
+        assert contain(s, sa, "")
+        assert contain(s, sa, "i")
+        assert contain(s, sa, "is")
+        assert contain(s, sa, "ssi")
+        assert contain(s, sa, "ssp") == False
+        assert contain(s, sa, "aaaaaaaaaaaaaaaa") == False
+        assert contain(s, sa, "zzzzzzzzzzzzzzzz") == False

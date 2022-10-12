@@ -236,11 +236,22 @@ def build_lcp_array(
 _T = typing.TypeVar("_T", str, typing.List[int])
 
 
+def contain(
+    s: _T,
+    sa: typing.List[int],
+    t: _T,
+):
+    """O(|T|log|S|)"""
+    l, r = find_all(s, sa, t)
+    return r - l > 0
+
+
 def find_all(
     s: _T,
     sa: typing.List[int],
     t: _T,
 ):
+    """O(|T|log|S|): returns pair(l, r). [l, r) means index range on sa"""
     l, r = -1, len(sa)
     while r - l > 1:
         m = l + r >> 1
@@ -257,4 +268,4 @@ def find_all(
         else:
             r = m
     b = r
-    return sa[a:b]
+    return a, b
