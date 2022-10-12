@@ -34,8 +34,8 @@ class Test(TestCase):
         assert find_all(s, sa, "is") == (2, 4)
         assert find_all(s, sa, "ssi") == (9, 10)
         assert find_all(s, sa, "ssp") == (10, 10)
-        assert find_all(s, sa, "aaaaaaaaaaaaaaaa") == (0,0)
-        assert find_all(s, sa, "zzzzzzzzzzzzzzzz") == (10,10)
+        assert find_all(s, sa, "aaaaaaaaaaaaaaaa") == (0, 0)
+        assert find_all(s, sa, "zzzzzzzzzzzzzzzz") == (10, 10)
 
     def test_contain(self) -> None:
         s = "missisippi"
