@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from cplib.suffix_array import build_suffix_array, contain, find_all
+from cplib.suffix_array import build_lcp_array, build_suffix_array, contain, find_all
 
 
 class Test(TestCase):
@@ -25,6 +25,12 @@ class Test(TestCase):
 
         for i in range(len(sa)):
             assert expected[i] == s[sa[i] :]
+
+    def test_lcp_array(self) -> None:
+        s = "missisippi"
+        sa = build_suffix_array(s)
+        lcp = build_lcp_array(s, sa)
+        assert lcp == [1, 1, 2, 0, 0, 1, 0, 2, 1]
 
     def test_find_all(self) -> None:
         s = "missisippi"
