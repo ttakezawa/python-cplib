@@ -60,7 +60,7 @@ class MaxflowGraph:
         assert 0 <= t < self._n
         assert s != t
         if flow_limit is None:
-            flow_limit = cast(int, sum(e.cap for e in self._g[s]))
+            flow_limit = sum(e.cap for e in self._g[s])
 
         current_edge = [0] * self._n
         level = [0] * self._n
@@ -71,7 +71,7 @@ class MaxflowGraph:
 
         def bfs() -> bool:
             fill(level, self._n)
-            queue = []
+            queue: List[int] = []
             q_front = 0
             queue.append(s)
             level[s] = 0
@@ -89,7 +89,7 @@ class MaxflowGraph:
             return False
 
         def dfs(lim: int) -> int:
-            stack = []
+            stack: List[int] = []
             edge_stack: List[MaxflowGraph._Edge] = []
             stack.append(t)
             while stack:
