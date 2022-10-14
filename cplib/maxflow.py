@@ -131,6 +131,7 @@ class MaxflowGraph:
         return flow
 
     def min_cut(self, s: int) -> List[bool]:
+        """O(n+m): 長さnのlistを返す。i番目の要素には、頂点sからiへ残余グラフで到達可能なときtrueを返す。flow(s,t)をflow_limitなしでちょうど一回呼んだ後に呼ぶと、返り値はs,t間のmincutに対応します。"""
         visited = [False] * self._n
         stack = [s]
         visited[s] = True

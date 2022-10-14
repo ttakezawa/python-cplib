@@ -19,3 +19,5 @@ class Test(TestCase):
             g.add_edge(s - 1, t - 1, cap)
 
         assert g.flow(0, 5) == 8
+
+        assert g.min_cut(0) == [True, False, False, True, False, False]
