@@ -11,8 +11,7 @@ class MaxflowGraph:
 
     class _Edge:
         def __init__(self, dst: int, cap: int) -> None:
-            self.dst = dst
-            self.cap = cap
+            self.dst, self.cap = dst, cap
             self.rev: Optional[MaxflowGraph._Edge] = None
 
     def __init__(self, n: int) -> None:
@@ -25,10 +24,8 @@ class MaxflowGraph:
         assert 0 <= dst < self._n
         assert 0 <= cap
         m = len(self._edges)
-        e = MaxflowGraph._Edge(dst, cap)
-        re = MaxflowGraph._Edge(src, 0)
-        e.rev = re
-        re.rev = e
+        e, re = MaxflowGraph._Edge(dst, cap), MaxflowGraph._Edge(src, 0)
+        e.rev, re.rev = re, e
         self._g[src].append(e)
         self._g[dst].append(re)
         self._edges.append(e)
@@ -62,8 +59,7 @@ class MaxflowGraph:
         if flow_limit is None:
             flow_limit = sum(e.cap for e in self._g[s])
 
-        current_edge = [0] * self._n
-        level = [0] * self._n
+        current_edge, level = [0] * self._n, [0] * self._n
 
         def fill(arr: List[int], value: int) -> None:
             for i in range(len(arr)):
@@ -71,10 +67,8 @@ class MaxflowGraph:
 
         def bfs() -> bool:
             fill(level, self._n)
-            queue: List[int] = []
-            q_front = 0
-            queue.append(s)
-            level[s] = 0
+            queue: List[int] = [s]
+            q_front, level[s] = 0, 0
             while q_front < len(queue):
                 v = queue[q_front]
                 q_front += 1
@@ -89,9 +83,8 @@ class MaxflowGraph:
             return False
 
         def dfs(lim: int) -> int:
-            stack: List[int] = []
+            stack: List[int] = [t]
             edge_stack: List[MaxflowGraph._Edge] = []
-            stack.append(t)
             while stack:
                 v = stack[-1]
                 if v == s:
@@ -133,8 +126,8 @@ class MaxflowGraph:
     def min_cut(self, s: int) -> List[bool]:
         """O(n+m): 長さnのlistを返す。i番目の要素には、頂点sからiへ残余グラフで到達可能なときtrueを返す。flow(s,t)をflow_limitなしでちょうど一回呼んだ後に呼ぶと、返り値はs,t間のmincutに対応します。"""
         visited = [False] * self._n
-        stack = [s]
         visited[s] = True
+        stack = [s]
         while stack:
             v = stack.pop()
             for e in self._g[v]:
