@@ -67,7 +67,7 @@ class MaxflowGraph:
 
         def bfs() -> bool:
             fill(level, self._n)
-            queue: List[int] = [s]
+            queue = [s]
             q_front, level[s] = 0, 0
             while q_front < len(queue):
                 v = queue[q_front]
@@ -83,7 +83,7 @@ class MaxflowGraph:
             return False
 
         def dfs(lim: int) -> int:
-            stack: List[int] = [t]
+            stack = [t]
             edge_stack: List[MaxflowGraph._Edge] = []
             while stack:
                 v = stack[-1]
