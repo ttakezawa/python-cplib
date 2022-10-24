@@ -1,8 +1,9 @@
+# SEE: https://atcoder.github.io/ac-library/production/document_ja/maxflow.html
 # Originated from https://github.com/not522/ac-library-python/blob/master/atcoder/maxflow.py
 from typing import List, NamedTuple, Optional, cast
 
 
-class MaxflowGraph:
+class MaxFlowGraph:
     class Edge(NamedTuple):
         src: int
         dst: int
@@ -12,19 +13,19 @@ class MaxflowGraph:
     class _Edge:
         def __init__(self, dst: int, cap: int) -> None:
             self.dst, self.cap = dst, cap
-            self.rev: Optional[MaxflowGraph._Edge] = None
+            self.rev: Optional[MaxFlowGraph._Edge] = None
 
     def __init__(self, n: int) -> None:
         self._n = n
-        self._g: List[List[MaxflowGraph._Edge]] = [[] for _ in range(n)]
-        self._edges: List[MaxflowGraph._Edge] = []
+        self._g: List[List[MaxFlowGraph._Edge]] = [[] for _ in range(n)]
+        self._edges: List[MaxFlowGraph._Edge] = []
 
     def add_edge(self, src: int, dst: int, cap: int) -> int:
         assert 0 <= src < self._n
         assert 0 <= dst < self._n
         assert 0 <= cap
         m = len(self._edges)
-        e, re = MaxflowGraph._Edge(dst, cap), MaxflowGraph._Edge(src, 0)
+        e, re = MaxFlowGraph._Edge(dst, cap), MaxFlowGraph._Edge(src, 0)
         e.rev, re.rev = re, e
         self._g[src].append(e)
         self._g[dst].append(re)
@@ -34,8 +35,8 @@ class MaxflowGraph:
     def get_edge(self, i: int) -> Edge:
         assert 0 <= i < len(self._edges)
         e = self._edges[i]
-        re = cast(MaxflowGraph._Edge, e.rev)
-        return MaxflowGraph.Edge(re.dst, e.dst, e.cap + re.cap, re.cap)
+        re = cast(MaxFlowGraph._Edge, e.rev)
+        return MaxFlowGraph.Edge(re.dst, e.dst, e.cap + re.cap, re.cap)
 
     def edges(self) -> List[Edge]:
         return [self.get_edge(i) for i in range(len(self._edges))]
@@ -84,7 +85,7 @@ class MaxflowGraph:
 
         def dfs(lim: int) -> int:
             stack = [t]
-            edge_stack: List[MaxflowGraph._Edge] = []
+            edge_stack: List[MaxFlowGraph._Edge] = []
             while stack:
                 v = stack[-1]
                 if v == s:
@@ -97,7 +98,7 @@ class MaxflowGraph:
                 next_level = level[v] - 1
                 while current_edge[v] < len(self._g[v]):
                     e = self._g[v][current_edge[v]]
-                    re = cast(MaxflowGraph._Edge, e.rev)
+                    re = cast(MaxFlowGraph._Edge, e.rev)
                     if level[e.dst] != next_level or re.cap == 0:
                         current_edge[v] += 1
                         continue

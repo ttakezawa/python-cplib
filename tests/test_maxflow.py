@@ -1,11 +1,11 @@
 from unittest import TestCase
 
-from cplib.maxflow import MaxflowGraph
+from cplib.maxflow import MaxFlowGraph
 
 
 class Test(TestCase):
     def test_flow(self) -> None:
-        g = MaxflowGraph(6)
+        g = MaxFlowGraph(6)
         edges = [
             (1, 2, 5),
             (1, 4, 4),
