@@ -61,7 +61,7 @@ class FactorialCache:
         for i in reversed(range(3, max + 1)):
             self._inv[i - 1] = self._inv[i] * i % mod
 
-    def combination(self, n: int, k: int) -> int:
+    def comb(self, n: int, k: int) -> int:
         if n < k:
             return 0
         return self._val[n] * self._inv[k] % self.mod * self._inv[n - k] % self.mod

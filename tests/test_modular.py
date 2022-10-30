@@ -24,12 +24,12 @@ class Test(TestCase):
         assert inv_mod(4, 13) == 10
         assert inv_mod(5, 13) == 8
 
-    def test_combination(self) -> None:
+    def test_comb(self) -> None:
         fc = FactorialCache(int(5e6), mod1000000007)
-        assert fc.combination(100, 2) == 4950
-        assert fc.combination(35, 11) == 417225900
-        assert fc.combination(14, 4) == 1001
-        assert fc.combination(0, 0) == 1
-        assert fc.combination(2, 0) == 1
-        assert fc.combination(2, 3) == 0
+        assert fc.comb(100, 2) == 4950
+        assert fc.comb(35, 11) == 417225900
+        assert fc.comb(14, 4) == 1001
+        assert fc.comb(0, 0) == 1
+        assert fc.comb(2, 0) == 1
+        assert fc.comb(2, 3) == 0
         assert fc.factorial(100) == 437918130
