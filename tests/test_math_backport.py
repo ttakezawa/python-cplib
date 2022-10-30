@@ -1,4 +1,3 @@
-from importlib.machinery import FrozenImporter
 from unittest import TestCase
 
 from cplib.math_backport import bit_count, comb, dist, gcd, lcm, perm
