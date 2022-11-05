@@ -21,3 +21,17 @@ def next_permutation(a: List[Any]) -> bool:
                 a[p], a[q], p, q = a[q], a[p], p + 1, q - 1
             return True
     return False
+
+
+def prev_permutation(a: List[Any]) -> bool:
+    for i in range(len(a) - 2, -1, -1):
+        if a[i] <= a[i + 1]:
+            continue
+        for j in range(len(a) - 1, i, -1):
+            if a[i] <= a[j]:
+                continue
+            a[i], a[j], p, q = a[j], a[i], i + 1, len(a) - 1
+            while p < q:
+                a[p], a[q], p, q = a[q], a[p], p + 1, q - 1
+            return True
+    return False
