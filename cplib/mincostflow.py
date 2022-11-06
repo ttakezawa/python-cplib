@@ -48,7 +48,7 @@ class MinCostFlowGraph:
         return [self.get_edge(i) for i in range(len(self._edges))]
 
     def flow(self, s: int, t: int, flow_limit: Optional[int] = None) -> Tuple[int, int]:
-        """O(F(n+m)log(n+m))"""
+        """returns tuple of (flow, cost) with O(F(n+m)log(n+m))"""
         return self.slope(s, t, flow_limit)[-1]
 
     def slope(
