@@ -1,25 +1,28 @@
 # Originaged from https://github.com/not522/ac-library-python/blob/master/atcoder/dsu.py
-from typing import Dict, List
+from typing import Hashable, List
 
 
 class DSUDict:
     def __init__(self) -> None:
-        self.parent_or_size: dict[int, int] = {}
+        self._parent: dict[Hashable, Hashable] = {}
+        self._size: dict[Hashable, int] = {}
 
-    def leader(self, a: int) -> int:
-        L: list[int] = []
-        while self.parent_or_size[a] >= 0:
-            L.append(a)
-            a = self.parent_or_size[a]
-        for l in L:
-            self.parent_or_size[l] = a
+    def add_node(self, a: Hashable):
+        if a not in self._parent:
+            self._parent[a] = a
+            self._size[a] = 1
+
+    def leader(self, a: Hashable) -> Hashable:
+        self.add_node(a)
+        buf: list[Hashable] = []
+        while self._parent[a] != a:
+            buf.append(a)
+            a = self._parent[a]
+        for l in buf:
+            self._parent[l] = a
         return a
 
-    def add_node(self, a: int):
-        if a not in self.parent_or_size:
-            self.parent_or_size[a] = -1
-
-    def merge(self, a: int, b: int) -> int:
+    def merge(self, a: Hashable, b: Hashable) -> Hashable:
         self.add_node(a)
         self.add_node(b)
         x = self.leader(a)
@@ -27,26 +30,27 @@ class DSUDict:
         if x == y:
             return x
 
-        if -self.parent_or_size[x] < -self.parent_or_size[y]:
+        if self._size[x] < self._size[y]:
             x, y = y, x
 
-        self.parent_or_size[x] += self.parent_or_size[y]
-        self.parent_or_size[y] = x
+        self._parent[y] = x
+        self._size[x] += self._size[y]
+        self._size[y] = self._size[x]
 
         return x
 
-    def same(self, a: int, b: int) -> bool:
+    def same(self, a: Hashable, b: Hashable) -> bool:
         self.add_node(a)
         self.add_node(b)
         return self.leader(a) == self.leader(b)
 
-    def size(self, a: int) -> int:
+    def size(self, a: Hashable) -> int:
         self.add_node(a)
-        return -self.parent_or_size[self.leader(a)]
+        return self._size[self.leader(a)]
 
-    def groups(self) -> List[List[int]]:
-        result: Dict[int, List[int]] = {}
-        for i in self.parent_or_size:
+    def groups(self) -> List[List[Hashable]]:
+        result: dict[Hashable, list[Hashable]] = {}
+        for i in self._parent:
             rt = self.leader(i)
             if rt in result:
                 result[rt].append(i)

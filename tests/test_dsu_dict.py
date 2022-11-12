@@ -14,3 +14,10 @@ class Test(TestCase):
         assert dsu.same(5, 5) == True
         assert dsu.same(0, 5) == False
         assert sorted(dsu.groups()) == sorted([[0, 8], [1, 2, 3], [5]])
+
+        assert dsu.size(0) == 2
+        assert dsu.size(1) == 3
+        assert dsu.size(2) == 3
+        assert dsu.size(3) == 3
+        assert dsu.size(8) == 2
+        assert dsu.size(99) == 1
