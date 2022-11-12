@@ -1,20 +1,22 @@
 # Originaged from https://github.com/not522/ac-library-python/blob/master/atcoder/dsu.py
-from typing import Hashable, List
+from typing import Generic, List, TypeVar
+
+_S = TypeVar("_S")
 
 
-class DSUDict:
+class DSUDict(Generic[_S]):
     def __init__(self) -> None:
-        self._parent: dict[Hashable, Hashable] = {}
-        self._size: dict[Hashable, int] = {}
+        self._parent: dict[_S, _S] = {}
+        self._size: dict[_S, int] = {}
 
-    def add_node(self, a: Hashable):
+    def add_node(self, a: _S):
         if a not in self._parent:
             self._parent[a] = a
             self._size[a] = 1
 
-    def leader(self, a: Hashable) -> Hashable:
+    def leader(self, a: _S) -> _S:
         self.add_node(a)
-        buf: list[Hashable] = []
+        buf: list[_S] = []
         while self._parent[a] != a:
             buf.append(a)
             a = self._parent[a]
@@ -22,7 +24,7 @@ class DSUDict:
             self._parent[l] = a
         return a
 
-    def merge(self, a: Hashable, b: Hashable) -> Hashable:
+    def merge(self, a: _S, b: _S) -> _S:
         self.add_node(a)
         self.add_node(b)
         x = self.leader(a)
@@ -39,17 +41,17 @@ class DSUDict:
 
         return x
 
-    def same(self, a: Hashable, b: Hashable) -> bool:
+    def same(self, a: _S, b: _S) -> bool:
         self.add_node(a)
         self.add_node(b)
         return self.leader(a) == self.leader(b)
 
-    def size(self, a: Hashable) -> int:
+    def size(self, a: _S) -> int:
         self.add_node(a)
         return self._size[self.leader(a)]
 
-    def groups(self) -> List[List[Hashable]]:
-        result: dict[Hashable, list[Hashable]] = {}
+    def groups(self) -> List[List[_S]]:
+        result: dict[_S, list[_S]] = {}
         for i in self._parent:
             rt = self.leader(i)
             if rt in result:
