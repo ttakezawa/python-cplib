@@ -44,7 +44,7 @@ class DSUDict:
         self.add_node(a)
         return -self.parent_or_size[self.leader(a)]
 
-    def groups(self) -> Dict[int, List[int]]:
+    def groups(self) -> List[List[int]]:
         result: Dict[int, List[int]] = {}
         for i in self.parent_or_size:
             rt = self.leader(i)
@@ -52,4 +52,4 @@ class DSUDict:
                 result[rt].append(i)
             else:
                 result[rt] = [i]
-        return result
+        return list(result.values())
