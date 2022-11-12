@@ -5,7 +5,7 @@ from cplib.dsu_dict import DSUDict
 
 class Test(TestCase):
     def test_dsu(self) -> None:
-        dsu = DSUDict()
+        dsu: DSUDict[int] = DSUDict()
         dsu.merge(0, 8)
         dsu.merge(1, 2)
         dsu.merge(2, 3)

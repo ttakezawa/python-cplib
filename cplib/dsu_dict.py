@@ -1,7 +1,7 @@
 # Originaged from https://github.com/not522/ac-library-python/blob/master/atcoder/dsu.py
-from typing import Generic, List, TypeVar
+from typing import Generic, Hashable, List, TypeVar
 
-_S = TypeVar("_S")
+_S = TypeVar("_S", bound=Hashable)
 
 
 class DSUDict(Generic[_S]):
