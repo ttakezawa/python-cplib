@@ -23,11 +23,11 @@ class LazySegtree(Generic[_S, _F]):
     def __init__(
         self,
         v: _Iterable[_S],
-        e: _S,
         op: Callable[[_S, _S], _S],
-        id: _F,
+        e: _S,
         mapping: Callable[[_F, _S], _S],
         composition: Callable[[_F, _F], _F],
+        id: _F,
     ) -> None:
         self._op = op
         self._e = e

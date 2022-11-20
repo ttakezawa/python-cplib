@@ -17,8 +17,8 @@ class Segtree(Generic[_S]):
     def __init__(
         self,
         v: List[_S],
-        e: _S,
         op: Callable[[_S, _S], _S],
+        e: _S,
     ) -> None:
         """
         Examples::
