@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from cplib.modular import FactorialCache, inv_mod, mod1000000007, pow_mod
+from cplib.modular import ModFactorialCache, mod_inv, mod1000000007, mod_pow
 
 
 class Test(TestCase):
@@ -15,17 +15,17 @@ class Test(TestCase):
         for a in range(-100, 70):
             for b in range(0, 20):
                 for c in range(1, 101):
-                    assert naive(a, b, c) == pow_mod(a, b, c)
+                    assert naive(a, b, c) == mod_pow(a, b, c)
 
     def test_inv_mod(self) -> None:
-        assert inv_mod(1, 13) == 1
-        assert inv_mod(2, 13) == 7
-        assert inv_mod(3, 13) == 9
-        assert inv_mod(4, 13) == 10
-        assert inv_mod(5, 13) == 8
+        assert mod_inv(1, 13) == 1
+        assert mod_inv(2, 13) == 7
+        assert mod_inv(3, 13) == 9
+        assert mod_inv(4, 13) == 10
+        assert mod_inv(5, 13) == 8
 
     def test_comb(self) -> None:
-        fc = FactorialCache(int(5e6), mod1000000007)
+        fc = ModFactorialCache(int(5e6), mod1000000007)
         assert fc.comb(100, 2) == 4950
         assert fc.comb(35, 11) == 417225900
         assert fc.comb(14, 4) == 1001

@@ -4,7 +4,7 @@ mod1000000007 = 1000000007
 mod998244353 = 998244353
 
 
-def pow_mod(x: int, n: int, mod: int) -> int:
+def mod_pow(x: int, n: int, mod: int) -> int:
     if mod == 1:
         return 0
     x %= mod
@@ -17,7 +17,7 @@ def pow_mod(x: int, n: int, mod: int) -> int:
     return r
 
 
-def inv_mod(x: int, mod: int) -> int:
+def mod_inv(x: int, mod: int) -> int:
     """xとmodは互いに素 GCD(x,mod)=1 であることが必要。互いに素でない場合はxとmodをgcdで割っておくことを検討する"""
     assert 1 <= mod
     z = _inv_gcd(x, mod)
@@ -44,7 +44,7 @@ def _inv_gcd(a: int, b: int) -> Tuple[int, int]:
     return s, m0
 
 
-class FactorialCache:
+class ModFactorialCache:
     __slots__ = (
         "mod",
         "_val",
@@ -57,7 +57,7 @@ class FactorialCache:
         self._inv = [1] * (max + 1)
         for i in range(2, max + 1):
             self._val[i] = self._val[i - 1] * i % mod
-        self._inv[max] = inv_mod(self._val[max], mod)
+        self._inv[max] = mod_inv(self._val[max], mod)
         for i in reversed(range(3, max + 1)):
             self._inv[i - 1] = self._inv[i] * i % mod
 
