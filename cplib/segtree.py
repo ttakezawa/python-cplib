@@ -140,6 +140,9 @@ class Segtree(Generic[_S]):
     def add(self, p: int, increment: _S) -> None:
         self.set(p, self.get(p) + increment)  # type: ignore
 
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__} {self._d[self._size:self._size+self._n].__str__()}>"
+
 
 def _ceil_pow2(n: int) -> int:
     x = 0

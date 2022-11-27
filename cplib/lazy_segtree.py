@@ -221,6 +221,9 @@ class LazySegtree(Generic[_S, _F]):
     def add(self, p: int, increment: _S) -> None:
         self.set(p, self.get(p) + increment)  # type: ignore
 
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__} {list(map(lambda i: self[i], range(self._n))).__str__()}>"
+
 
 def _ceil_pow2(n: int) -> int:
     x = 0
