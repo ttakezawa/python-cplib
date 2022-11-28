@@ -20,6 +20,6 @@ class Test(TestCase):
         assert dsu.size(2) == 3
         assert dsu.size(3) == 3
         assert dsu.size(8) == 2
-        assert dsu.size(99) == 1
 
-        assert dsu.leader(999) == 999
+        assert dsu.leader(1001) == 1001
+        assert dsu.size(1002) == 1
