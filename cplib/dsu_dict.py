@@ -9,13 +9,12 @@ class DSUDict(Generic[_S]):
         self._parent: dict[_S, _S] = {}
         self._size: dict[_S, int] = {}
 
-    def add_node(self, a: _S):
+    def leader(self, a: _S) -> _S:
         if a not in self._parent:
+            # If a is not present, add as new node.
             self._parent[a] = a
             self._size[a] = 1
-
-    def leader(self, a: _S) -> _S:
-        self.add_node(a)
+            return a
         buf: list[_S] = []
         while self._parent[a] != a:
             buf.append(a)
@@ -25,29 +24,21 @@ class DSUDict(Generic[_S]):
         return a
 
     def merge(self, a: _S, b: _S) -> _S:
-        self.add_node(a)
-        self.add_node(b)
         x = self.leader(a)
         y = self.leader(b)
         if x == y:
             return x
-
         if self._size[x] < self._size[y]:
             x, y = y, x
-
         self._parent[y] = x
         self._size[x] += self._size[y]
         self._size[y] = self._size[x]
-
         return x
 
     def same(self, a: _S, b: _S) -> bool:
-        self.add_node(a)
-        self.add_node(b)
         return self.leader(a) == self.leader(b)
 
     def size(self, a: _S) -> int:
-        self.add_node(a)
         return self._size[self.leader(a)]
 
     def groups(self) -> List[List[_S]]:
