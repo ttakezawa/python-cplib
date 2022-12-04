@@ -5,7 +5,7 @@ class PotentialDSU:
     def __init__(self, n: int = 0) -> None:
         self._n = n
         self.parent_or_size = [-1] * n
-        self.potential = [0] * n
+        self._potential = [0] * n
 
     def merge(self, a: int, b: int, diff: int) -> int:
         """b is greater than a by diff: potential[b] = potential[a] + diff"""
@@ -14,7 +14,7 @@ class PotentialDSU:
 
         x = self.leader(a)
         y = self.leader(b)
-        diff += self.potential[a] - self.potential[b]
+        diff += self._potential[a] - self._potential[b]
 
         if x == y:
             return x
@@ -24,7 +24,7 @@ class PotentialDSU:
 
         self.parent_or_size[x] += self.parent_or_size[y]
         self.parent_or_size[y] = x
-        self.potential[y] = diff
+        self._potential[y] = diff
 
         return x
 
@@ -33,7 +33,7 @@ class PotentialDSU:
         # leader should be called here
         if not self.same(a, b):
             raise ValueError(f"a and b ({a} and {b}) is not same group: ")
-        return self.potential[b] - self.potential[a]
+        return self._potential[b] - self._potential[a]
 
     def same(self, a: int, b: int) -> bool:
         assert 0 <= a < self._n
@@ -47,10 +47,10 @@ class PotentialDSU:
         cum = 0
         leader = a
         while self.parent_or_size[leader] >= 0:
-            cum += self.potential[leader]
+            cum += self._potential[leader]
             leader = self.parent_or_size[leader]
         while a != leader:
-            self.potential[a], cum = cum, cum - self.potential[a]
+            self._potential[a], cum = cum, cum - self._potential[a]
             self.parent_or_size[a], a = leader, self.parent_or_size[a]
         return leader
 
