@@ -8,7 +8,7 @@ class PotentialDSU:
         self.potential = [0] * n
 
     def merge(self, a: int, b: int, diff: int) -> int:
-        """b is greater than a by diff: potental[b] = potential[a] + diff"""
+        """b is greater than a by diff: potential[b] = potential[a] + diff"""
         assert 0 <= a < self._n
         assert 0 <= b < self._n
 
