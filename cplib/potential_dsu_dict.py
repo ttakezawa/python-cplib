@@ -1,4 +1,7 @@
 # Originaged from https://github.com/not522/ac-library-python/blob/master/atcoder/dsu.py
+# Verify
+# - https://onlinejudge.u-aizu.ac.jp/problems/DSL_1_B
+# - https://atcoder.jp/contests/abc280/tasks/abc280_f
 from typing import Generic, Hashable, List, TypeVar
 
 _S = TypeVar("_S", bound=Hashable)

@@ -1,4 +1,4 @@
-# Problem
+# Verify
 # - https://atcoder.jp/contests/abc174/tasks/abc174_f
 # - https://atcoder.jp/contests/abc242/tasks/abc242_g
 from typing import Callable, List, Optional

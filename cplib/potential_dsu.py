@@ -1,3 +1,6 @@
+# Verify
+# - https://onlinejudge.u-aizu.ac.jp/problems/DSL_1_B
+# - https://atcoder.jp/contests/abc280/tasks/abc280_f
 from typing import List
 
 

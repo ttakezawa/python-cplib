@@ -2,10 +2,6 @@ from unittest import TestCase
 
 from cplib.potential_dsu_dict import PotentialDSUDict
 
-# Verify
-# - https://onlinejudge.u-aizu.ac.jp/problems/DSL_1_B
-# - https://atcoder.jp/contests/abc280/tasks/abc280_f
-
 
 class Test(TestCase):
     def test_dsu(self) -> None:
