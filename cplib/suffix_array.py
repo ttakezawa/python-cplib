@@ -236,7 +236,7 @@ def build_lcp_array(
 _T = typing.TypeVar("_T", str, typing.List[int])
 
 
-def contain(s: _T, sa: typing.List[int], t: _T):
+def contain(s: _T, sa: typing.List[int], t: _T) -> bool:
     """O(|T|log|S|)"""
     l, r = find_all(s, sa, t)
     return r - l > 0

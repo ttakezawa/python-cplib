@@ -12,12 +12,21 @@ class RollingHash:
             nxt = hashes[-1] * BASE + val
             hashes.append(nxt % MODULO)
         self.hashes = hashes
+        self.string = string
 
     def hash(self, l: int, r: int):
         """calculate hash of string[l:r]. O(1)"""
         while len(POWS) <= r - l:
             POWS.append(POWS[-1] * BASE % MODULO)
         return (self.hashes[r] - self.hashes[l] * POWS[r - l]) % MODULO
+
+    def find(self, sub: str, start: int = 0) -> int:
+        """O(|S|). Return the lowest index in the string where substring sub is found within the slice s[start:]. Return -1 if sub is not found."""
+        h = hash(sub)
+        for i in range(start, len(self.string) - len(sub) + 1):
+            if h == self.hash(i, i + len(sub)):
+                return i
+        return -1
 
 
 def hash(string: str):
@@ -27,9 +36,9 @@ def hash(string: str):
 
 def longest_common_prefix(
     rolling_hash1: RollingHash,
-    rolling_hash2: RollingHash,
     l1: int,
     r1: int,
+    rolling_hash2: RollingHash,
     l2: int,
     r2: int,
 ):
