@@ -1,29 +1,36 @@
-# Originated from https://qiita.com/Kiri8128/items/eca965fe86ea5f4cbb98
+# Originated from
+# - https://qiita.com/Kiri8128/items/eca965fe86ea5f4cbb98
+# - https://zenn.dev/mizar/articles/791698ea860581
+# Verify
+# - https://algo-method.com/tasks/553
+# - https://algo-method.com/tasks/513
 from math import gcd
 from typing import Callable, Dict, Optional
-
-_L1, _L2, _L3 = (
-    [2, 7, 61],
-    [2, 3, 5, 7, 11, 13, 17],
-    [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37],
-)
 
 
 def is_prime(n: int):
     """Miller-Rabin: ≒ O(1)"""
-    d = n - 1
-    d = d // (d & -d)
-    L = _L1 if n < 1 << 32 else _L2 if n < 1 << 48 else _L3
-    for a in L:
-        t = d
-        y = pow(a, t, n)
-        if y == 1:
+    if n == 2:
+        return True
+    if n < 2 or (n & 1) == 0:
+        return False
+    n1 = n - 1
+    d, s = n1, 0
+    while (d & 1) == 0:
+        d //= 2
+        s += 1
+    for a in [2, 325, 9375, 28178, 450775, 9780504, 1795265022]:
+        if a % n == 0:
             continue
-        while y != n - 1:
-            y = (y * y) % n
-            if y == 1 or t == n - 1:
-                return False
-            t <<= 1
+        t = pow(a, d, n)
+        if t == 1 or t == n1:
+            continue
+        for _ in range(s - 1):
+            t = pow(t, 2, n)
+            if t == n1:
+                break
+        else:
+            return False
     return True
 
 
