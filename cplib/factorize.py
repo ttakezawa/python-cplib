@@ -2,7 +2,7 @@ from collections import defaultdict as __defaultdict
 from typing import Dict as _Dict
 
 
-def factorize(n: int) -> _Dict[int, int]:
+def prime_factorize(n: int) -> _Dict[int, int]:
     """O(√n)"""
     ret: _Dict[int, int] = __defaultdict(int)
     while n & 1 == 0:
