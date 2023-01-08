@@ -1,3 +1,7 @@
+# Originated from https://zenn.dev/mizar/articles/791698ea860581
+# Verify https://algo-method.com/tasks/513
+
+
 def is_prime(n: int):
     """Miller-Rabin: ≒ O(1)"""
     if n == 2:

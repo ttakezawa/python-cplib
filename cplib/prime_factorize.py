@@ -1,13 +1,8 @@
-# Originated from
-# - https://qiita.com/Kiri8128/items/eca965fe86ea5f4cbb98
-# - https://zenn.dev/mizar/articles/791698ea860581
-# Verify
-# - https://algo-method.com/tasks/553
-# - https://algo-method.com/tasks/513
+# Originated from https://qiita.com/Kiri8128/items/eca965fe86ea5f4cbb98
+# Verify https://algo-method.com/tasks/553
+import typing
 from collections import defaultdict as __defaultdict
 from math import gcd
-from typing import Callable
-from typing import Dict as _Dict
 
 from .miller_rabin import is_prime
 
@@ -47,7 +42,7 @@ def prime_factorize(n: int):
 def _find_factor_rho(n: int) -> int:
     m = 1 << n.bit_length() // 8
     for c in range(1, 99):
-        f: Callable[[int], int] = lambda x: (x * x + c) % n
+        f: typing.Callable[[int], int] = lambda x: (x * x + c) % n
         y, r, q, g = 2, 1, 1, 1
         x, ys = 0, 0
         while g == 1:
@@ -77,9 +72,9 @@ def _find_factor_rho(n: int) -> int:
     return -1
 
 
-def _trial_division_prime_factorize(n: int) -> _Dict[int, int]:
+def _prime_factorize_with_trial_division(n: int):
     """O(√n)"""
-    ret: _Dict[int, int] = __defaultdict(int)
+    ret: dict[int, int] = __defaultdict(int)
     while n & 1 == 0:
         ret[2] += 1
         n >>= 1
