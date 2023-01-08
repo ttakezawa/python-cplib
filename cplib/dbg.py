@@ -1,7 +1,5 @@
 import sys
 
-__all__ = ["dbg"]
-
 if len(sys.argv) > 0 and sys.argv[0] == "./Main.py":
     # then, it means AtCoder
     def dbg(*args: object) -> None:
@@ -11,10 +9,11 @@ else:
     import inspect
     import pathlib
     import re
-    from pprint import pformat
-    from typing import List
 
     def dbg(*args: object) -> None:
+        from pprint import pformat
+        from typing import List
+
         caller = inspect.stack()[1]
         ctx = caller.code_context
         s = ctx[0] if ctx else ""
