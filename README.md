@@ -1,5 +1,7 @@
 # python-cplib
 
+library for competitive programming with Python
+
 ## Test
 
 ```sh
