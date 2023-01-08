@@ -4,9 +4,12 @@
 # Verify
 # - https://algo-method.com/tasks/553
 # - https://algo-method.com/tasks/513
+from collections import defaultdict as __defaultdict
 from math import gcd
-from typing import Callable, Dict, Optional
-from miller_rabin import is_prime
+from typing import Callable
+from typing import Dict as _Dict
+
+from .miller_rabin import is_prime
 
 
 def prime_factorize(n: int):
@@ -41,20 +44,6 @@ def prime_factorize(n: int):
     return ret
 
 
-def divisors(n: int, prime_factors: Optional[Dict[int, int]] = None):
-    """≲ O(n⁽¹/³⁾)"""
-    if prime_factors == None:
-        prime_factors = prime_factorize(n)
-    ret: list[int] = [1]
-    for p in prime_factors:
-        ret_prev = ret
-        ret = []
-        for i in range(prime_factors[p] + 1):
-            for r in ret_prev:
-                ret.append(r * (p**i))
-    return sorted(ret)
-
-
 def _find_factor_rho(n: int) -> int:
     m = 1 << n.bit_length() // 8
     for c in range(1, 99):
@@ -86,3 +75,20 @@ def _find_factor_rho(n: int) -> int:
                 return n // g
             return _find_factor_rho(g)
     return -1
+
+
+def _trial_division_prime_factorize(n: int) -> _Dict[int, int]:
+    """O(√n)"""
+    ret: _Dict[int, int] = __defaultdict(int)
+    while n & 1 == 0:
+        ret[2] += 1
+        n >>= 1
+    i = 3
+    while i * i <= n:
+        while n % i == 0:
+            ret[i] += 1
+            n //= i
+        i += 2
+    if n > 1:
+        ret[n] = 1
+    return ret

@@ -1,7 +1,23 @@
-from typing import List
+# Verify
+# - https://algo-method.com/tasks/344
+from typing import Dict, List, Optional
+from .prime_factorize import prime_factorize
 
 
-def divisors(n: int) -> List[int]:
+def divisors(n: int, prime_factors: Optional[Dict[int, int]] = None):
+    """≲ O(n⁽¹/³⁾)"""
+    if prime_factors == None:
+        prime_factors = prime_factorize(n)
+    ret: list[int] = [1]
+    for p in prime_factors:
+        ret, ret_prev = [], ret
+        for i in range(prime_factors[p] + 1):
+            for r in ret_prev:
+                ret.append(r * (p**i))
+    return sorted(ret)
+
+
+def _divisors_with_trial_division(n: int) -> List[int]:
     """O(√n)"""
     ret: List[int] = []
     i = 1
