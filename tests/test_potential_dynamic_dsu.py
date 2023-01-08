@@ -1,14 +1,14 @@
 from unittest import TestCase
 
-from cplib.dsu_dict import DSUDict
+from cplib.potential_dynamic_dsu import PotentialDynamicDSU
 
 
 class Test(TestCase):
     def test_dsu(self) -> None:
-        dsu: DSUDict[int] = DSUDict()
-        dsu.merge(0, 8)
-        dsu.merge(1, 2)
-        dsu.merge(2, 3)
+        dsu: PotentialDynamicDSU[int] = PotentialDynamicDSU()
+        dsu.merge(0, 8, 1)
+        dsu.merge(1, 2, 1)
+        dsu.merge(2, 3, 1)
         assert dsu.same(0, 8) == True
         assert dsu.same(1, 3) == True
         assert dsu.same(5, 5) == True
@@ -23,3 +23,6 @@ class Test(TestCase):
 
         assert dsu.leader(1001) == 1001
         assert dsu.size(1002) == 1
+
+        assert dsu.diff(0, 8) == 1
+        assert dsu.diff(1, 3) == 2

@@ -7,7 +7,7 @@ from typing import Generic, Hashable, List, TypeVar
 _S = TypeVar("_S", bound=Hashable)
 
 
-class PotentialDSUDict(Generic[_S]):
+class PotentialDynamicDSU(Generic[_S]):
     def __init__(self) -> None:
         self._parent: dict[_S, _S] = {}
         self._size: dict[_S, int] = {}
