@@ -1,30 +1,24 @@
 # Originated from https://qiita.com/keymoon/items/11fac5627672a6d6a9f6
-# Verify https://atcoder.jp/contests/abc284/tasks/abc284_f
+# Verify
+# - https://atcoder.jp/contests/abc284/tasks/abc284_f
+# - https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_bd
 from random import choice
-
-BASE = 10**9 + choice([5, 8, 9, 10, 14, 27, 29, 44, 61, 62, 65, 66, 70, 81, 84, 85])
-MODULO = (1 << 61) - 1
-POWS = [1]
 
 _MASK30 = (1 << 30) - 1
 _MASK31 = (1 << 31) - 1
 _MASK61 = (1 << 61) - 1
 
+BASE = 10**9 + choice([5, 8, 9, 10, 14, 27, 29, 44, 61, 62, 65, 66, 70, 81, 84, 85])
+MODULO = _MASK61
+POWS = [1]
+
 
 def _mul(a: int, b: int):
-    """returns a * b % MODULO"""
-    au = a >> 31
-    ad = a & _MASK31
-    bu = b >> 31
-    bd = b & _MASK31
+    """Return a * b ≡ MODULO"""
+    au, ad = a >> 31, a & _MASK31
+    bu, bd = b >> 31, b & _MASK31
     mid = ad * bu + au * bd
-    x = au * bu * 2 + (mid >> 30) + ((mid & _MASK30) << 31) + ad * bd
-    return ((x >> 61) + (x & _MASK61)) % MODULO
-
-
-def _mod(x: int):
-    """returns x % MODULO"""
-    return ((x >> 61) + (x & _MASK61)) % MODULO
+    return ((au * bu) << 1) + ad * bd + ((mid & _MASK30) << 31) + (mid >> 30)
 
 
 class RollingHash:
@@ -32,8 +26,7 @@ class RollingHash:
         """O(|S|)"""
         hashes = [0]
         for c in string:
-            nxt = _mod(_mul(hashes[-1], BASE) + ord(c))
-            hashes.append(nxt)
+            hashes.append((_mul(hashes[-1], BASE) + ord(c)) % MODULO)
         self.hashes = hashes
         self.string = string
 
@@ -41,7 +34,7 @@ class RollingHash:
         """calculate hash of string[l:r]. O(1)"""
         while len(POWS) <= r - l:
             POWS.append(_mul(POWS[-1], BASE))
-        return _mod(self.hashes[r] - _mul(self.hashes[l], POWS[r - l]))
+        return (self.hashes[r] - _mul(self.hashes[l], POWS[r - l])) % MODULO
 
     def find(self, sub: str, start: int = 0) -> int:
         """O(|S|). Return the lowest index in the string where substring sub is found within the slice s[start:]. Return -1 if sub is not found."""
@@ -56,7 +49,7 @@ def connect(hash1: int, hash2: int, hash2_len: int):
     """O(1)"""
     while len(POWS) <= hash2_len:
         POWS.append(_mul(POWS[-1], BASE))
-    return _mod(_mul(hash1, POWS[hash2_len]) + hash2)
+    return (_mul(hash1, POWS[hash2_len]) + hash2) % MODULO
 
 
 def hash(string: str):
